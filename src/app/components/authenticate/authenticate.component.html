@@ -1,0 +1,62 @@
+<div class="component">
+  <div class="component__form">
+    <form class="form">
+      <div class="form__header">
+        <div class="form__header__image">
+          <img src="assets/ucema-small-icon.svg">
+        </div>
+        <div class="form__header__title">
+          <p>UCEMA Academics</p>
+        </div>
+      </div>
+
+      <!-- ! Verify Email -->
+      <div class="form__body">
+        <div class="form__body__input" *ngIf="auth_type == AuthStagesEnum.EMAIL">
+          <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput [formControl]="email" required>
+            <mat-error *ngIf="email.invalid">{{getErrorMessage(email)}}</mat-error>
+
+          </mat-form-field>
+        </div>
+
+        <!-- ! Password Login -->
+        <div class="form__body__input" *ngIf="auth_type == AuthStagesEnum.CREDENTIALS">
+          <mat-form-field>
+            <mat-label>Enter your password</mat-label>
+            <input matInput [errorStateMatcher]="error_matcher" [formControl]="password"
+                   [type]="hide_password ? 'password' : 'text'" required>
+            <mat-error *ngIf="password.invalid">{{getErrorMessage(password)}}</mat-error>
+            <button mat-icon-button matSuffix
+                    (click)="hide_password = !hide_password"
+                    [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide_password"
+            >
+              <mat-icon>{{hide_password ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+        <!-- ! Actions -->
+        <div class="form__body__actions">
+          <!-- * Email -->
+          <button class="btn btn-md btn-secondary" type="submit" (click)="submitEmail()"
+                  *ngIf="auth_type == AuthStagesEnum.EMAIL">Next
+          </button>
+
+          <!-- * Credentials -->
+          <button class="btn btn-md btn-secondary" type="submit" *ngIf="auth_type == AuthStagesEnum.CREDENTIALS">Log in
+          </button>
+          <button class="btn btn-md btn-secondary" type="button" *ngIf="auth_type == AuthStagesEnum.CREDENTIALS"
+                  (click)="submitWebAuthn()">
+            <i class="bi bi-fingerprint"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="component__side-background">
+    <img src="">
+  </div>
+</div>
