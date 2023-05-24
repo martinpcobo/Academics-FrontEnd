@@ -13,12 +13,25 @@ import AuthenticationController from "./controllers/AuthenticationController";
 import AuthenticationService from "./services/AuthenticationService";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
+import {AppRoutingModule} from './app-routing.module';
+import {HomeComponent} from './components/home/home.component';
+import {NavbarComponent} from './components/navbar/navbar.component';
+import {FooterComponent} from './components/footer/footer.component';
+import {RouterModule} from "@angular/router";
+import ToastService from "./services/ToastService";
+import AuthenticatorService from "./services/AuthenticatorService";
+import AuthenticatorController from "./controllers/AuthenticatorController";
+import UserController from "./controllers/UserController";
+import UserService from "./services/UserService";
 
 @NgModule({
   declarations: [
     AppComponent,
     AuthenticateComponent,
-    ToastComponent
+    ToastComponent,
+    HomeComponent,
+    NavbarComponent,
+    FooterComponent,
   ],
   imports: [
     HttpClientModule,
@@ -28,14 +41,22 @@ import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    AppRoutingModule,
+    RouterModule
   ],
   providers: [
     AuthenticationController,
     AuthenticationService,
     HttpClient,
     JwtHelperService,
+    ToastService,
     ToastComponent,
+    AuthenticatorService,
+    AuthenticatorController,
+    UserService,
+    UserController,
+
     {provide: JWT_OPTIONS, useValue: JWT_OPTIONS},
   ],
   bootstrap: [AppComponent]

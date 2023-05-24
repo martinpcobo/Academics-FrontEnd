@@ -1,29 +1,31 @@
 <div class="component">
+  <div class="component__side-background">
+    <img src="">
+  </div>
   <div class="component__form">
     <form class="form">
       <div class="form__header">
-        <div class="form__header__image">
-          <img src="assets/ucema-small-icon.svg">
-        </div>
         <div class="form__header__title">
-          <p>UCEMA Academics</p>
+          <h4>Sign in with your UCEMA ID</h4>
+        </div>
+        <div class="form__header__subtitle">
+          <p>Get access to your academic details.</p>
         </div>
       </div>
 
       <!-- ! Verify Email -->
       <div class="form__body">
         <div class="form__body__input" *ngIf="auth_type == AuthStagesEnum.EMAIL">
-          <mat-form-field>
+          <mat-form-field id="mat-form-field" hideRequiredMarker="true">
             <mat-label>Email</mat-label>
             <input matInput [formControl]="email" required>
             <mat-error *ngIf="email.invalid">{{getErrorMessage(email)}}</mat-error>
-
           </mat-form-field>
         </div>
 
         <!-- ! Password Login -->
         <div class="form__body__input" *ngIf="auth_type == AuthStagesEnum.CREDENTIALS">
-          <mat-form-field>
+          <mat-form-field hideRequiredMarker="true">
             <mat-label>Enter your password</mat-label>
             <input matInput [errorStateMatcher]="error_matcher" [formControl]="password"
                    [type]="hide_password ? 'password' : 'text'" required>
@@ -38,25 +40,31 @@
           </mat-form-field>
         </div>
 
+        <!-- ! WebAuthn Login -->
+        <div class="form__body__input-webauthn" *ngIf="auth_type == AuthStagesEnum.WEBAUTHNLOGIN">
+          <p>Login with Passkey</p>
+          <i class="bi bi-fingerprint" style="font-size: 5rem;"></i>
+        </div>
+
         <!-- ! Actions -->
         <div class="form__body__actions">
           <!-- * Email -->
-          <button class="btn btn-md btn-secondary" type="submit" (click)="submitEmail()"
-                  *ngIf="auth_type == AuthStagesEnum.EMAIL">Next
+
+          <button mat-flat-button color="primary" type="submit" (click)="submitEmail()"
+                  *ngIf="auth_type == AuthStagesEnum.EMAIL">
+            Next
           </button>
 
           <!-- * Credentials -->
-          <button class="btn btn-md btn-secondary" type="submit" *ngIf="auth_type == AuthStagesEnum.CREDENTIALS">Log in
+
+          <button mat-flat-button color="primary" type="submit" *ngIf="auth_type == AuthStagesEnum.CREDENTIALS">Login
           </button>
-          <button class="btn btn-md btn-secondary" type="button" *ngIf="auth_type == AuthStagesEnum.CREDENTIALS"
+          <button mat-flat-button color="primary" type="button" *ngIf="auth_type == AuthStagesEnum.CREDENTIALS"
                   (click)="submitWebAuthn()">
             <i class="bi bi-fingerprint"></i>
           </button>
         </div>
       </div>
     </form>
-  </div>
-  <div class="component__side-background">
-    <img src="">
   </div>
 </div>

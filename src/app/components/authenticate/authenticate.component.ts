@@ -3,6 +3,11 @@ import {Component} from "@angular/core";
 import {ErrorStateMatcher} from "@angular/material/core";
 import AuthenticationService from "../../services/AuthenticationService";
 import AuthLoginDetails from "../../models/dtos/AuthLoginDetails";
+import {ToastType} from "../toast/toast.component";
+import ToastService from "../../services/ToastService";
+import UserService from "../../services/UserService";
+import AuthenticatorService from "../../services/AuthenticatorService";
+
 
 @Component({
   selector: 'app-authenticate',
@@ -17,7 +22,12 @@ export class AuthenticateComponent {
   password: FormControl<string | null> = new FormControl('', [Validators.required]);
   hide_password: boolean = true;
 
-  constructor(private auth_service: AuthenticationService) {
+
+  constructor(
+    private auth_service: AuthenticationService,
+    private authenticator_service: AuthenticatorService,
+    private user_service: UserService,
+    private toast_service: ToastService) {
   }
 
   protected getErrorMessage(element: FormControl) {
@@ -31,8 +41,19 @@ export class AuthenticateComponent {
     return null;
   }
 
-  protected submitEmail(): void {
-    if (this.email.valid) {
+  protected async submitEmail(): Promise<void> {
+    if (this.email.valid && this.email.value) {
+      let credentials: AuthLoginDetails = new AuthLoginDetails();
+      credentials.setUsername(this.email.value);
+
+      let user_id: null | String = await this.user_service.getUserIdFromVerifiedEmail(credentials);
+      if (user_id) {
+        if (await this.authenticator_service.authenticatorExists(user_id)) {
+          this.auth_type = AuthStagesEnum.WEBAUTHNLOGIN;
+          await this.submitWebAuthn();
+          return;
+        }
+      }
       this.auth_type = AuthStagesEnum.CREDENTIALS;
     } else {
       this.email.markAsTouched();
@@ -46,17 +67,30 @@ export class AuthenticateComponent {
       authLoginDetails.setPassword(String(this.password.value));
 
       this.auth_service.authenticatePassword(authLoginDetails)
+
     } else {
       this.password.markAsTouched();
     }
   }
 
-  protected submitWebAuthn(): void {
+  protected async submitWebAuthn(): Promise<void> {
     this.auth_type = AuthStagesEnum.WEBAUTHNLOGIN;
     let authLoginDetails = new AuthLoginDetails();
     authLoginDetails.setUsername(String(this.email.value));
 
-    this.auth_service.startAuthnLogin(authLoginDetails);
+    try {
+      if (await this.auth_service.startAuthnLogin(authLoginDetails)) {
+        this.toast_service.setMessage('Authentication', 'Login Successful!', ToastType.SUCCESS);
+      } else {
+        this.auth_type = AuthStagesEnum.EMAIL;
+        console.log("Could not authenticate using Passkeys!");
+        this.toast_service.setMessage('Authentication', 'Could not authenticate using Passkeys!', ToastType.WARNING);
+      }
+    } catch (err: any) {
+      console.log(err);
+      this.auth_type = AuthStagesEnum.EMAIL;
+      this.toast_service.setMessage('Authentication', 'Could not authenticate using Passkeys!', ToastType.WARNING);
+    }
   }
 
   protected readonly AuthStagesEnum = AuthStagesEnum;

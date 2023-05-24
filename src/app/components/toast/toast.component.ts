@@ -1,21 +1,33 @@
-import {Component, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import ToastService, {ToastMessage} from "../../services/ToastService";
 
 @Component({
   selector: 'app-toast',
   templateUrl: './toast.component.html',
   styleUrls: ['./toast.component.scss']
 })
-export class ToastComponent {
-  @Input() message = {body: '', type: ToastType.INFO};
-  existingTimeout = 0;
+export class ToastComponent implements OnInit {
+  protected message: ToastMessage | null = null;
 
-  setMessage(body: string, type: ToastType, time = 3000): void {
-    if (this.existingTimeout) {
-      clearTimeout(this.existingTimeout);
-    }
-    this.message.body = body;
-    this.message.type = type;
-    this.existingTimeout = window.setTimeout(() => this.message.body = '', time);
+  constructor(private toast_service: ToastService) {
+  }
+
+  protected readonly ToastType = ToastType;
+
+  ngOnInit() {
+    this.toast_service.getMessage().subscribe({
+      next: (message: ToastMessage | null) => {
+        this.message = message;
+        if (message) {
+          setTimeout(() => {
+            this.message = null;
+          }, message.timeout)
+        }
+      },
+      error: (error: any) => {
+        console.error("Could not display toast message!");
+      }
+    })
   }
 }
 

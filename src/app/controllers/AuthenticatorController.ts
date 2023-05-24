@@ -6,7 +6,7 @@ import Authenticator from "../models/Authenticator";
 @Injectable()
 export default class AuthenticatorController {
   // ! Attributes
-  private server_url: String = 'http://localhost:3000';
+  private server_url: String = 'http://localhost:8080';
 
   // ! Constructor
   public constructor(private http: HttpClient) {
@@ -21,6 +21,13 @@ export default class AuthenticatorController {
   // * Get Authenticator by ID
   public getAuthenticatorById(authenticator_id: String, user_id: String): Observable<Authenticator> {
     return this.http.get<Authenticator>(this.server_url + '/api/auth/authenticator/' + user_id + '/' + authenticator_id);
+  }
+
+  // * Get Autheticator Count
+  public getAuthenticatorCount(user_id: String): Observable<Number> {
+    return this.http.get<Number>(this.server_url + '/api/auth/authenticator/' + user_id + '/count', {
+      responseType: undefined
+    });
   }
 
   // * Modify the Name of an Authenticator

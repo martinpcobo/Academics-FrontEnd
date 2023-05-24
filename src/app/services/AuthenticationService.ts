@@ -6,14 +6,17 @@ import {ToastComponent, ToastType} from "../components/toast/toast.component";
 import AuthenticationController, {WebAuthnLoginResponse} from "../controllers/AuthenticationController";
 import AuthLoginDetails from "../models/dtos/AuthLoginDetails";
 import * as WebAuthn from "@github/webauthn-json";
+import {HttpErrorResponse, HttpStatusCode} from "@angular/common/http";
+import ToastService from "./ToastService";
 
 // Define the service as injectable and include the AuthenticationController provider
 @Injectable()
 export default class AuthenticationService {
   private current_user: User | undefined;
   private token: String | undefined;
+  private auth_key: String | undefined;
 
-  constructor(private auth_controller: AuthenticationController, private router: Router, private jwtHelper: JwtHelperService, public toast: ToastComponent) {
+  constructor(private toast_service: ToastService, private auth_controller: AuthenticationController, private router: Router, private jwtHelper: JwtHelperService, public toast: ToastComponent) {
     const token = localStorage.getItem('token');
     if (token) {
       this.setToken(token);
@@ -30,6 +33,10 @@ export default class AuthenticationService {
     return this.token;
   }
 
+  public get getAuthKey(): String | undefined {
+    return this.auth_key;
+  }
+
   // * Setters
   private setCurrentUser(user: User | undefined) {
     this.current_user = user;
@@ -37,6 +44,11 @@ export default class AuthenticationService {
 
   private setToken(token: String) {
     this.token = token;
+    this.setAuthKey('Bearer ' + token);
+  }
+
+  private setAuthKey(auth_key: String) {
+    this.auth_key = auth_key;
   }
 
   // ! Business Logic
@@ -46,8 +58,8 @@ export default class AuthenticationService {
 
     this.setCurrentUser(undefined);
 
-    this.router.navigate(['/']).then(() => {
-      this.toast.setMessage('Logged out successfully!', ToastType.SUCCESS);
+    this.router.navigate(['/login']).then(() => {
+      this.toast_service.setMessage('Authentication', 'Logged out successfully!', ToastType.SUCCESS)
     });
   }
 
@@ -60,11 +72,11 @@ export default class AuthenticationService {
         this.setCurrentUser(this.jwtHelper.decodeToken(res.toString()).user);
 
         this.router.navigate(['/']).then((res) => {
-          this.toast.setMessage('Logged in Successfully!', ToastType.SUCCESS);
+          this.toast_service.setMessage('Authentication', 'Logged in successfully!', ToastType.SUCCESS)
         });
       },
       error: () => {
-        this.toast.setMessage('Invalid credentials!', ToastType.DANGER)
+        this.toast_service.setMessage('Authentication', 'Invalid Credentials!', ToastType.WARNING);
       }
     });
   }
@@ -79,7 +91,7 @@ export default class AuthenticationService {
       },
       error: (res) => {
         console.log(res);
-        this.toast.setMessage('Invalid credentials!', ToastType.DANGER)
+        this.toast_service.setMessage('Authentication', 'Invalid Credentials!', ToastType.WARNING);
       }
     });
   }
@@ -92,42 +104,49 @@ export default class AuthenticationService {
       },
       error: (res) => {
         console.log(res);
-        this.toast.setMessage('Invalid credentials!', ToastType.DANGER)
+        this.toast_service.setMessage('Authentication', 'Invalid Credentials!', ToastType.WARNING);
       }
     });
   }
 
   // Start WebAuthn Login
-  public startAuthnLogin(credentials: AuthLoginDetails): void {
-    this.auth_controller.startAuthnLogin(credentials).subscribe({
-      next: async (res: WebAuthnLoginResponse) => {
-        let public_key: WebAuthn.PublicKeyCredentialWithAssertionJSON = await WebAuthn.get(res);
+  public startAuthnLogin(credentials: AuthLoginDetails): Promise<boolean> {
+    return new Promise(async (resolve, reject): Promise<void> => {
+      this.auth_controller.startAuthnLogin(credentials).subscribe({
+        next: async (res: WebAuthnLoginResponse) => {
+          let public_key: WebAuthn.PublicKeyCredentialWithAssertionJSON = await WebAuthn.get(res);
 
-        credentials.setPublicKey(public_key);
+          credentials.setPublicKey(public_key);
 
-        this.endAuthnLogin(credentials);
-        this.toast.setMessage('Login successfully!', ToastType.DANGER)
-      },
-      error: (res) => {
-        console.log(res);
-        this.toast.setMessage('Invalid credentials!', ToastType.DANGER)
-      }
-    });
+          resolve(await this.endAuthnLogin(credentials));
+        },
+        error: (err: HttpErrorResponse) => {
+          if (err.status == HttpStatusCode.NotFound) {
+            reject("You don't have a Passkey registered!");
+          }
+          reject("Service temporarily unavailable!");
+        }
+      });
+    })
   }
 
   // End WebAuthn Login
-  public endAuthnLogin(credentials: AuthLoginDetails): void {
-    this.auth_controller.endAuthnLogin(credentials).subscribe({
-      next: (token: String) => {
-        this.setToken(token);
+  public endAuthnLogin(credentials: AuthLoginDetails): Promise<boolean> {
+    return new Promise(
+      async (resolve, reject): Promise<void> => {
+        this.auth_controller.endAuthnLogin(credentials).subscribe({
+          next: (token: String) => {
+            this.setToken(token);
 
-        // TODO: Implement user retrival
-        //this.jwtHelper.decodeToken(res.toString()).id => Gets the Id of the user that the token belongs to.
-      },
-      error: (res) => {
-        console.log(res);
-        this.toast.setMessage('Invalid credentials!', ToastType.DANGER)
+            // TODO: Implement user retrival
+            // this.jwtHelper.decodeToken(res.toString()).id => Gets the Id of the user that the token belongs to.
+            resolve(true);
+          },
+          error: (err) => {
+            reject(err);
+          }
+        });
       }
-    });
+    );
   }
 }
