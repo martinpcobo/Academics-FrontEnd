@@ -1,31 +1,49 @@
-<aside class="navbar navbar-collapsed" navbarCollapseDirective>
+<aside class="navbar navbar-not-collapsed" navbarCollapseDirective>
   <div class="navbar__header">
     <div class="navbar__header__logo">
       <img src="assets/ucema-small-icon.svg">
     </div>
   </div>
   <div class="navbar__menu">
-    <div class="menu-item">
+    <div
+      class="menu-item"
+      [ngClass]="{
+        'menu-item-active': this.router.url === '/courses'
+      }"
+      (click)="this.router.navigate(['/courses'])"
+    >
       <div class="menu-item__icon">
-        <i class="bi bi-mortarboard-fill"></i>
+        <i class="bi bi-mortarboard"></i>
       </div>
       <div class="menu-item__title">
         <p>Courses</p>
       </div>
     </div>
 
-    <div class="menu-item">
+    <div
+      class="menu-item"
+      [ngClass]="{
+        'menu-item-active': this.router.url === '/career'
+      }"
+      (click)="this.router.navigate(['/career'])"
+    >
       <div class="menu-item__icon">
-        <i class="bi bi-bar-chart-fill"></i>
+        <i class="bi bi-bar-chart"></i>
       </div>
       <div class="menu-item__title">
-        <p>Careear</p>
+        <p>Career</p>
       </div>
     </div>
 
-    <div class="menu-item">
+    <div
+      class="menu-item"
+      [ngClass]="{
+        'menu-item-active': this.router.url === '/grades'
+      }"
+      (click)="this.router.navigate(['/grades'])"
+    >
       <div class="menu-item__icon">
-        <i class="bi bi-bookmark-fill"></i>
+        <i class="bi bi-bookmark"></i>
       </div>
       <div class="menu-item__title">
         <p>Grades</p>

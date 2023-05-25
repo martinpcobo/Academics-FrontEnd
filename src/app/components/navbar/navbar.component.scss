@@ -1,4 +1,8 @@
-$debug-borders: 1px solid red;
+@use "@angular/material" as mat;
+
+@import "src/theme";
+
+$debug-borders: none;
 
 
 .navbar {
@@ -18,7 +22,11 @@ $debug-borders: 1px solid red;
   width: max-content;
   padding: 1rem;
 
+  @extend .mat-app-background;
+
   &__header {
+    padding-left: .2rem;
+
     width: 100%;
 
     &__logo {
@@ -57,7 +65,10 @@ $debug-borders: 1px solid red;
 
       width: 100%;
 
-      margin-left: .3rem;
+      padding: .2rem .6rem;
+      border-radius: 1rem;
+
+      cursor: pointer;
 
       &__icon {
         grid-row: 1 / 2;
@@ -66,7 +77,8 @@ $debug-borders: 1px solid red;
         height: max-content;
 
         i {
-          font-size: 1.8rem;
+          font-size: 1.3rem;
+          color: rgb(148, 154, 183);
         }
       }
 
@@ -76,9 +88,42 @@ $debug-borders: 1px solid red;
         margin-top: .1rem;
 
         p {
-          font-size: 1.3rem;
+          font-size: 1rem;
           font-weight: 400;
           margin: 0;
+          color: rgb(148, 154, 183);
+        }
+      }
+    }
+
+    .menu-item-not-active {
+      background-color: transparent;
+
+      .menu-item__icon {
+        i {
+          color: rgb(148, 154, 183);
+        }
+      }
+
+      .menu-item__title {
+        p {
+          color: rgb(148, 154, 183);
+        }
+      }
+    }
+
+    .menu-item-active {
+      background-color: mat.get-color-from-palette($Academics-dark-accent);
+
+      .menu-item__icon {
+        i {
+          color: white;
+        }
+      }
+
+      .menu-item__title {
+        p {
+          color: white;
         }
       }
     }
@@ -168,8 +213,16 @@ $debug-borders: 1px solid red;
     &__info {
       display: grid;
     }
+
   }
 
+  .navbar__menu:hover .menu-item {
+    @extend .menu-item-not-active;
+  }
+
+  .menu-item:hover {
+    @extend .menu-item-active;
+  }
 }
 
 p {

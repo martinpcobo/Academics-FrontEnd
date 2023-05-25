@@ -1,4 +1,5 @@
-import {Component, Directive, ElementRef, HostListener} from '@angular/core';
+import {Component} from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-navbar',
@@ -6,12 +7,6 @@ import {Component, Directive, ElementRef, HostListener} from '@angular/core';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
-  protected navbar_state = NavBarStates.COLLAPSED;
-
-  protected readonly NavBarStates = NavBarStates;
-}
-
-enum NavBarStates {
-  COLLAPSED,
-  EXPANDED
+  constructor(protected router: Router) {
+  }
 }
