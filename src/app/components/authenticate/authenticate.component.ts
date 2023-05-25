@@ -1,12 +1,11 @@
-import {FormControl, FormGroupDirective, NgForm, Validators} from "@angular/forms";
+import {FormControl, Validators} from "@angular/forms";
 import {Component} from "@angular/core";
-import {ErrorStateMatcher} from "@angular/material/core";
 import AuthenticationService from "../../services/AuthenticationService";
 import AuthLoginDetails from "../../models/dtos/AuthLoginDetails";
-import {ToastType} from "../toast/toast.component";
 import ToastService from "../../services/ToastService";
 import UserService from "../../services/UserService";
 import AuthenticatorService from "../../services/AuthenticatorService";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -16,25 +15,26 @@ import AuthenticatorService from "../../services/AuthenticatorService";
   providers: [AuthenticationService]
 })
 export class AuthenticateComponent {
-  error_matcher = new MyErrorStateMatcher();
-  auth_type: AuthStagesEnum = AuthStagesEnum.EMAIL;
-  email: FormControl<string | null> = new FormControl('', [Validators.required, Validators.email]);
-  password: FormControl<string | null> = new FormControl('', [Validators.required]);
-  hide_password: boolean = true;
+  protected auth_type: AuthStagesEnum = AuthStagesEnum.EMAIL;
+  protected email: FormControl<string | null> = new FormControl('', [Validators.required, Validators.email, Validators.pattern("^[A-Za-z0-9._%+-]+@ucema\\.edu\\.ar$")]);
+  protected password: FormControl<string | null> = new FormControl('', [Validators.required]);
+  protected hide_password: boolean = true;
 
 
   constructor(
     private auth_service: AuthenticationService,
     private authenticator_service: AuthenticatorService,
     private user_service: UserService,
-    private toast_service: ToastService) {
+    private toast_service: ToastService,
+    private router: Router,
+  ) {
   }
 
   protected getErrorMessage(element: FormControl) {
     if (element.hasError('required')) {
       return 'Required';
     }
-    if (element.hasError('email')) {
+    if (element.hasError('email') || element.hasError('pattern')) {
       return 'Not a valid email';
     }
 
@@ -43,16 +43,10 @@ export class AuthenticateComponent {
 
   protected async submitEmail(): Promise<void> {
     if (this.email.valid && this.email.value) {
-      let credentials: AuthLoginDetails = new AuthLoginDetails();
-      credentials.setUsername(this.email.value);
-
-      let user_id: null | String = await this.user_service.getUserIdFromVerifiedEmail(credentials);
-      if (user_id) {
-        if (await this.authenticator_service.authenticatorExists(user_id)) {
-          this.auth_type = AuthStagesEnum.WEBAUTHNLOGIN;
-          await this.submitWebAuthn();
-          return;
-        }
+      if (await this.authenticator_service.userHasAuthenticators(this.email.value)) {
+        this.auth_type = AuthStagesEnum.WEBAUTHNLOGIN;
+        await this.submitWebAuthn();
+        return;
       }
       this.auth_type = AuthStagesEnum.CREDENTIALS;
     } else {
@@ -67,7 +61,6 @@ export class AuthenticateComponent {
       authLoginDetails.setPassword(String(this.password.value));
 
       this.auth_service.authenticatePassword(authLoginDetails)
-
     } else {
       this.password.markAsTouched();
     }
@@ -78,29 +71,15 @@ export class AuthenticateComponent {
     let authLoginDetails = new AuthLoginDetails();
     authLoginDetails.setUsername(String(this.email.value));
 
-    try {
-      if (await this.auth_service.startAuthnLogin(authLoginDetails)) {
-        this.toast_service.setMessage('Authentication', 'Login Successful!', ToastType.SUCCESS);
-      } else {
-        this.auth_type = AuthStagesEnum.EMAIL;
-        console.log("Could not authenticate using Passkeys!");
-        this.toast_service.setMessage('Authentication', 'Could not authenticate using Passkeys!', ToastType.WARNING);
-      }
-    } catch (err: any) {
-      console.log(err);
-      this.auth_type = AuthStagesEnum.EMAIL;
-      this.toast_service.setMessage('Authentication', 'Could not authenticate using Passkeys!', ToastType.WARNING);
+    if (await this.auth_service.startAuthnLogin(authLoginDetails)) {
+      await this.router.navigate(['/']);
+    } else {
+      this.auth_type = AuthStagesEnum.CREDENTIALS;
     }
   }
 
   protected readonly AuthStagesEnum = AuthStagesEnum;
-}
-
-export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
-  }
+  protected readonly window = window;
 }
 
 enum AuthStagesEnum {

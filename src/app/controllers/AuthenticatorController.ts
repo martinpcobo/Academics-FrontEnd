@@ -24,8 +24,8 @@ export default class AuthenticatorController {
   }
 
   // * Get Autheticator Count
-  public getAuthenticatorCount(user_id: String): Observable<Number> {
-    return this.http.get<Number>(this.server_url + '/api/auth/authenticator/' + user_id + '/count', {
+  public getAuthenticatorCountByUsername(username: String): Observable<Number> {
+    return this.http.get<Number>(this.server_url + '/api/auth/authenticator/' + username + '/count', {
       responseType: undefined
     });
   }

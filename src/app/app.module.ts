@@ -16,13 +16,14 @@ import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
 import {AppRoutingModule} from './app-routing.module';
 import {HomeComponent} from './components/home/home.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
-import {FooterComponent} from './components/footer/footer.component';
 import {RouterModule} from "@angular/router";
 import ToastService from "./services/ToastService";
 import AuthenticatorService from "./services/AuthenticatorService";
 import AuthenticatorController from "./controllers/AuthenticatorController";
 import UserController from "./controllers/UserController";
 import UserService from "./services/UserService";
+import {MatChipsModule} from "@angular/material/chips";
+import {CollapseNavbarDirective} from "./directives/CollapseNavbarDirective";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import UserService from "./services/UserService";
     ToastComponent,
     HomeComponent,
     NavbarComponent,
-    FooterComponent,
+    CollapseNavbarDirective
   ],
   imports: [
     HttpClientModule,
@@ -43,7 +44,8 @@ import UserService from "./services/UserService";
     MatButtonModule,
     MatIconModule,
     AppRoutingModule,
-    RouterModule
+    RouterModule,
+    MatChipsModule,
   ],
   providers: [
     AuthenticationController,
@@ -59,7 +61,7 @@ import UserService from "./services/UserService";
 
     {provide: JWT_OPTIONS, useValue: JWT_OPTIONS},
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {
 }

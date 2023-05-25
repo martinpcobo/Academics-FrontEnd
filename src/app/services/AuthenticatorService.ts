@@ -10,14 +10,14 @@ export default class AuthenticatorService {
 
   // ! Business Logic
   // * Authenticator Exists
-  public authenticatorExists(user_id: String): Promise<boolean> {
+  public userHasAuthenticators(username: String): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      this.authenticator_controller.getAuthenticatorCount(user_id).subscribe({
+      this.authenticator_controller.getAuthenticatorCountByUsername(username).subscribe({
         next: (res: Number) => {
           resolve(res.valueOf() > 0);
         },
         error: (error) => {
-          reject(false);
+          resolve(false);
         }
       });
     });

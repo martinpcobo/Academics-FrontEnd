@@ -1,0 +1,26 @@
+$debug-borders: 1px solid blue;
+
+.component {
+  display: grid;
+
+  grid-template-rows: 1fr;
+  grid-template-columns: max-content 1fr;
+
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  height: 100vh;
+  width: 100vw;
+
+  app-navbar {
+    grid-row: 1 / 2;
+    grid-column: 1 / 2;
+
+    height: 100%;
+  }
+
+  body {
+    grid-row: 1 / 2;
+    grid-column: 2 / 3;
+  }
+}

@@ -15,7 +15,7 @@ export default class AuthenticationController {
   // ! Traditional AuthenticationService Requests
   // * Login using Username and Password
   public authenticatePassword(credentials: AuthLoginDetails): Observable<String> {
-    return this.http.post<String>(this.server_url + '/api/authenticate/login', credentials);
+    return this.http.post<String>(this.server_url + '/api/auth/login', credentials);
   }
 
   // ! WebAuthn AuthenticationService Requests

@@ -12,6 +12,8 @@ import ToastService from "./ToastService";
 // Define the service as injectable and include the AuthenticationController provider
 @Injectable()
 export default class AuthenticationService {
+  private component_toast_subject: String = "Authentication";
+
   private current_user: User | undefined;
   private token: String | undefined;
   private auth_key: String | undefined;
@@ -59,7 +61,7 @@ export default class AuthenticationService {
     this.setCurrentUser(undefined);
 
     this.router.navigate(['/login']).then(() => {
-      this.toast_service.setMessage('Authentication', 'Logged out successfully!', ToastType.SUCCESS)
+      this.toast_service.setMessage(this.component_toast_subject, 'Logged out successfully!', ToastType.SUCCESS)
     });
   }
 
@@ -72,11 +74,15 @@ export default class AuthenticationService {
         this.setCurrentUser(this.jwtHelper.decodeToken(res.toString()).user);
 
         this.router.navigate(['/']).then((res) => {
-          this.toast_service.setMessage('Authentication', 'Logged in successfully!', ToastType.SUCCESS)
+          this.toast_service.setMessage(this.component_toast_subject, 'Logged in successfully!', ToastType.SUCCESS)
         });
       },
-      error: () => {
-        this.toast_service.setMessage('Authentication', 'Invalid Credentials!', ToastType.WARNING);
+      error: (err: HttpErrorResponse) => {
+        if (err.status === HttpStatusCode.ServiceUnavailable) {
+          this.toast_service.setMessage(this.component_toast_subject, 'Invalid Credentials!', ToastType.WARNING);
+        } else {
+          this.toast_service.setMessage(this.component_toast_subject, 'Invalid Credentials!', ToastType.WARNING);
+        }
       }
     });
   }
@@ -91,7 +97,7 @@ export default class AuthenticationService {
       },
       error: (res) => {
         console.log(res);
-        this.toast_service.setMessage('Authentication', 'Invalid Credentials!', ToastType.WARNING);
+        this.toast_service.setMessage(this.component_toast_subject, 'Invalid Credentials!', ToastType.WARNING);
       }
     });
   }
@@ -104,7 +110,7 @@ export default class AuthenticationService {
       },
       error: (res) => {
         console.log(res);
-        this.toast_service.setMessage('Authentication', 'Invalid Credentials!', ToastType.WARNING);
+        this.toast_service.setMessage(this.component_toast_subject, 'Invalid Credentials!', ToastType.WARNING);
       }
     });
   }
@@ -122,9 +128,13 @@ export default class AuthenticationService {
         },
         error: (err: HttpErrorResponse) => {
           if (err.status == HttpStatusCode.NotFound) {
-            reject("You don't have a Passkey registered!");
+            this.toast_service.setMessage(this.component_toast_subject, "You don't have a Passkey registered!", ToastType.WARNING);
+          } else if (err.status == HttpStatusCode.ServiceUnavailable) {
+            this.toast_service.setMessage(this.component_toast_subject, "Service Unavailable.", ToastType.DANGER);
+          } else {
+            this.toast_service.setMessage(this.component_toast_subject, "Could not authenticate using Passkeys.", ToastType.DANGER);
           }
-          reject("Service temporarily unavailable!");
+          reject(false);
         }
       });
     })
@@ -139,11 +149,17 @@ export default class AuthenticationService {
             this.setToken(token);
 
             // TODO: Implement user retrival
+            this.toast_service.setMessage(this.component_toast_subject, 'Logged in successfully!', ToastType.SUCCESS);
             // this.jwtHelper.decodeToken(res.toString()).id => Gets the Id of the user that the token belongs to.
             resolve(true);
           },
-          error: (err) => {
-            reject(err);
+          error: (err: HttpErrorResponse) => {
+            if (err.status == HttpStatusCode.ServiceUnavailable) {
+              this.toast_service.setMessage(this.component_toast_subject, "Service Unavailable.", ToastType.DANGER);
+            } else {
+              this.toast_service.setMessage(this.component_toast_subject, "Could not authenticate using Passkeys.", ToastType.DANGER);
+            }
+            reject(false);
           }
         });
       }
