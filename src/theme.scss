@@ -3,7 +3,7 @@
 @include mat.core();
 
 // ! Custom Palette
-$academics-palette: (
+$academics-primary-palette: (
   50: #f8e8ed,
   100: #efc6d1,
   200: #d88f9a,
@@ -25,12 +25,12 @@ $academics-palette: (
 // ! Define colors
 
 // * Light Colors
-$Academics-light-primary: mat.define-palette($academics-palette, 700, 500, 900);
-$Academics-light-accent: mat.define-palette(mat.$indigo-palette, 800, 500, 900);
-$Academics-light-warn: mat.define-palette(mat.$red-palette, 600);
+$Academics-light-primary: mat.define-palette($academics-primary-palette, 700, 500, 900);
+$Academics-light-accent: mat.define-palette(mat.$blue-gray-palette, 500, 100, 800);
+$Academics-light-warn: mat.define-palette(mat.$red-palette);
 // * Dark Colors
-$Academics-dark-primary: mat.define-palette($academics-palette);
-$Academics-dark-accent: mat.define-palette(mat.$indigo-palette);
+$Academics-dark-primary: mat.define-palette($academics-primary-palette);
+$Academics-dark-accent: mat.define-palette(mat.$blue-gray-palette, 500, 100, 800);
 $Academics-dark-warn: mat.define-palette(mat.$red-palette);
 
 
