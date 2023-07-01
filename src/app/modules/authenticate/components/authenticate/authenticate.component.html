@@ -1,4 +1,4 @@
-<div class="component">
+<div class="component mat-app-background">
   <div class="component__side-background">
   </div>
   <div class="component__form">
@@ -14,24 +14,24 @@
 
       <div class="form__body">
         <!-- ! Email Input -->
-        <div class="form__body__input" *ngIf="auth_type == AuthStagesEnum.EMAIL">
+        <div *ngIf="auth_type == AuthStagesEnum.EMAIL" class="form__body__input">
           <mat-form-field hideRequiredMarker="true">
             <mat-label>Email</mat-label>
-            <input matInput [formControl]="email" required>
+            <input [formControl]="email" matInput required>
             <mat-error *ngIf="email.invalid">{{getErrorMessage(email)}}</mat-error>
           </mat-form-field>
         </div>
 
         <!-- ! Password Input -->
-        <div class="form__body__input" *ngIf="auth_type == AuthStagesEnum.CREDENTIALS">
+        <div *ngIf="auth_type == AuthStagesEnum.CREDENTIALS" class="form__body__input">
           <mat-form-field hideRequiredMarker="true">
             <mat-label>Enter your password</mat-label>
-            <input matInput [formControl]="password" [type]="hide_password ? 'password' : 'text'">
+            <input [formControl]="password" [type]="hide_password ? 'password' : 'text'" matInput>
             <mat-error *ngIf="password.invalid">{{getErrorMessage(password)}}</mat-error>
-            <button mat-icon-button matSuffix
-                    (click)="hide_password = !hide_password"
-                    [attr.aria-label]="'Hide password'"
+            <button (click)="hide_password = !hide_password" [attr.aria-label]="'Hide password'"
                     [attr.aria-pressed]="hide_password"
+                    mat-icon-button
+                    matSuffix
             >
               <mat-icon>{{hide_password ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
@@ -39,7 +39,7 @@
         </div>
 
         <!-- ! WebAuthn Login -->
-        <div class="form__body__input-webauthn" *ngIf="auth_type == AuthStagesEnum.WEBAUTHNLOGIN">
+        <div *ngIf="auth_type == AuthStagesEnum.WEBAUTHNLOGIN" class="form__body__input-webauthn">
           <i class="bi bi-fingerprint" style="font-size: 5rem;"></i>
         </div>
 
@@ -47,15 +47,16 @@
         <div class="form__body__actions">
           <!-- * Email -->
 
-          <button mat-flat-button color="primary" type="submit" (click)="submitEmail()"
-                  *ngIf="auth_type == AuthStagesEnum.EMAIL">
+          <button (click)="submitEmail()" *ngIf="auth_type == AuthStagesEnum.EMAIL" color="primary" mat-flat-button
+                  type="submit">
             Next
           </button>
 
           <!-- * Credentials -->
 
-          <button mat-flat-button color="primary" type="submit" *ngIf="auth_type == AuthStagesEnum.CREDENTIALS"
-                  (click)="submitPassword()">Login
+          <button (click)="submitPassword()" *ngIf="auth_type == AuthStagesEnum.CREDENTIALS" color="primary"
+                  mat-flat-button
+                  type="submit">Login
           </button>
         </div>
       </div>

@@ -2,16 +2,17 @@
   <div class="navbar__header">
     <div class="navbar__header__logo">
       <img
-        src="assets/ucema-small-icon.svg"
-        (click)="this.router.navigate(['/'])"
+        (click)="this.router.navigate(['/home'])"
+        alt="UCEMA Small Logo"
+        src="../../../../../assets/ucema-small-icon.svg"
       >
     </div>
   </div>
   <div class="navbar__menu">
     <div
+      [routerLink]="['/home/courses']"
       class="menu-item"
       routerLinkActive="menu-item-active"
-      [routerLink]="['/courses']"
     >
       <div class="menu-item__icon">
         <i class="bi bi-mortarboard"></i>
@@ -22,9 +23,9 @@
     </div>
 
     <div
+      [routerLink]="['/home/career']"
       class="menu-item"
       routerLinkActive="menu-item-active"
-      [routerLink]="['/career']"
     >
       <div class="menu-item__icon">
         <i class="bi bi-bar-chart"></i>
@@ -35,9 +36,9 @@
     </div>
 
     <div
+      [routerLink]="['/home/grades']"
       class="menu-item"
       routerLinkActive="menu-item-active"
-      [routerLink]="['/grades']"
     >
       <div class="menu-item__icon">
         <i class="bi bi-bookmark"></i>
@@ -49,31 +50,38 @@
   </div>
   <div class="navbar__config">
     <div
-      class="navbar__config__item"
-      (click)="this.authentication_service.logout()"
-    >
-      <div class="navbar__config__item__icon">
-        <i class="bi bi-door-open"></i>
-      </div>
-      <div class="navbar__config__item__title">
-        <p>Logout</p>
-      </div>
-    </div>
-    <div
+      [matMenuTriggerFor]="menu"
       class="profile"
-      [routerLink]="['/profile']"
     >
       <div class="profile__photo">
-        <img src="assets/User-Photo.png">
+        <img src="../../../../../assets/User-Photo.png">
       </div>
       <div class="profile__info">
         <div class="profile__info__name">
           <p>Martin Perez Cobo</p>
         </div>
         <div class="profile__info__details">
-          <p class="text-muted">Ing. Informatica</p>
+          <p>Student</p>
         </div>
       </div>
     </div>
   </div>
 </aside>
+
+
+<mat-menu #menu="matMenu">
+  <div class="options_menu">
+    <button [routerLink]="['/home/profile']" mat-menu-item>
+      <mat-icon>
+        <i class="bi bi-person-circle"></i>
+      </mat-icon>
+      <span>Profile</span>
+    </button>
+    <button (click)="this.authentication_service.logout()" mat-menu-item>
+      <mat-icon>
+        <i class="bi bi-door-open"></i>
+      </mat-icon>
+      <span>Logout</span>
+    </button>
+  </div>
+</mat-menu>

@@ -1,2 +1,7 @@
-<router-outlet></router-outlet>
-<app-toast></app-toast>
+<div [ngClass]="{
+  'dark-theme': this.theme === EThemeOptions.DARK_THEME,
+  'light-theme': this.theme === EThemeOptions.LIGHT_THEME
+}" class="mat-typography mat-app-background">
+  <router-outlet></router-outlet>
+  <app-toast></app-toast>
+</div>

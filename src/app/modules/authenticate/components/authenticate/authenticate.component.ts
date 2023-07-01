@@ -1,8 +1,8 @@
 import {FormControl, Validators} from "@angular/forms";
 import {Component} from "@angular/core";
 import AuthenticationService from "../../services/AuthenticationService";
-import AuthLoginDetails from "../../models/dtos/AuthLoginDetails";
-import ToastService from "../../services/ToastService";
+import AuthLoginDetails from "../../../../models/dtos/AuthLoginDetails";
+import ToastService from "../../../../services/ToastService";
 import UserService from "../../services/UserService";
 import AuthenticatorService from "../../services/AuthenticatorService";
 import {Router} from "@angular/router";
@@ -19,7 +19,8 @@ export class AuthenticateComponent {
   protected email: FormControl<string | null> = new FormControl('', [Validators.required, Validators.email, Validators.pattern("^[A-Za-z0-9._%+-]+@ucema\\.edu\\.ar$")]);
   protected password: FormControl<string | null> = new FormControl('', [Validators.required]);
   protected hide_password: boolean = true;
-
+  protected readonly AuthStagesEnum = AuthStagesEnum;
+  protected readonly window = window;
 
   constructor(
     private auth_service: AuthenticationService,
@@ -77,9 +78,6 @@ export class AuthenticateComponent {
       this.auth_type = AuthStagesEnum.CREDENTIALS;
     }
   }
-
-  protected readonly AuthStagesEnum = AuthStagesEnum;
-  protected readonly window = window;
 }
 
 enum AuthStagesEnum {

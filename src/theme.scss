@@ -56,10 +56,15 @@ $Academics-Dark-Theme: mat.define-dark-theme((
 ));
 
 // ! Include the theme
-// Apply the dark theme by default
-@include mat.all-component-themes($Academics-Dark-Theme);
 
-// * Apply the light theme only when the user prefers light themes.
-@media (prefers-color-scheme: light) {
+.light-theme {
+  @include mat.core-theme($Academics-Light-Theme);
+  @include mat.button-theme($Academics-Light-Theme);
   @include mat.all-component-themes($Academics-Light-Theme);
+}
+
+.dark-theme {
+  @include mat.core-theme($Academics-Dark-Theme);
+  @include mat.button-theme($Academics-Dark-Theme);
+  @include mat.all-component-themes($Academics-Dark-Theme);
 }

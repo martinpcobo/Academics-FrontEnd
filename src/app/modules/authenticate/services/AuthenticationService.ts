@@ -1,13 +1,13 @@
 import {Injectable} from "@angular/core";
-import User from "../models/User";
+import User from "../../../models/User";
 import {Router} from "@angular/router";
 import {JwtHelperService} from "@auth0/angular-jwt";
-import {ToastComponent, ToastType} from "../components/toast/toast.component";
+import {ToastComponent, ToastType} from "../../../components/toast/toast.component";
 import AuthenticationController, {WebAuthnLoginResponse} from "../controllers/AuthenticationController";
-import AuthLoginDetails from "../models/dtos/AuthLoginDetails";
+import AuthLoginDetails from "../../../models/dtos/AuthLoginDetails";
 import * as WebAuthn from "@github/webauthn-json";
 import {HttpErrorResponse, HttpStatusCode} from "@angular/common/http";
-import ToastService from "./ToastService";
+import ToastService from "../../../services/ToastService";
 
 // Define the service as injectable and include the AuthenticationController provider
 @Injectable()

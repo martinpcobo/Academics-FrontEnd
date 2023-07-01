@@ -23,15 +23,12 @@ $debug-borders: none;
 
   column-gap: 0;
 
-  background: white;
   height: 100vh;
   width: 100vw;
 
   &__side-background {
     height: 100%;
-    background: #940028;
-
-    background-image: url("/assets/ucema-students-background.jpg");
+    background: #940028 url("/assets/ucema-students-background.jpg");
 
     img {
     }
@@ -45,7 +42,6 @@ $debug-borders: none;
     align-items: flex-start;
 
     height: 100%;
-    background: white;
 
     padding: 6rem 8rem;
   }
@@ -99,8 +95,7 @@ $debug-borders: none;
     grid-template-columns: 1fr;
 
     row-gap: .8rem;
-
-    background-color: white;
+    
     border: $debug-borders;
 
     &__input {

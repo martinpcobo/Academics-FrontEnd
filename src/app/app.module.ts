@@ -2,66 +2,37 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
-import {AuthenticateComponent} from './components/authenticate/authenticate.component';
-import {ToastComponent} from './components/toast/toast.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatInputModule} from "@angular/material/input";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MatButtonModule} from "@angular/material/button";
-import {MatIconModule} from "@angular/material/icon";
-import AuthenticationController from "./controllers/AuthenticationController";
-import AuthenticationService from "./services/AuthenticationService";
-import {HttpClient, HttpClientModule} from "@angular/common/http";
-import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
-import {AppRoutingModule} from './app-routing.module';
-import {HomeComponent} from './components/home/home.component';
-import {NavbarComponent} from './components/navbar/navbar.component';
-import {RouterModule} from "@angular/router";
+import {RouterOutlet} from "@angular/router";
+import {ToastComponent} from "./components/toast/toast.component";
+import {RoutingModule} from "./modules/routing/routing.module";
+import {AuthenticateModule} from "./modules/authenticate/authenticate.module";
 import ToastService from "./services/ToastService";
-import AuthenticatorService from "./services/AuthenticatorService";
-import AuthenticatorController from "./controllers/AuthenticatorController";
-import UserController from "./controllers/UserController";
-import UserService from "./services/UserService";
-import {MatChipsModule} from "@angular/material/chips";
-import {CollapseNavbarDirective} from "./directives/CollapseNavbarDirective";
+import {DashboardModule} from "./modules/dashboard/dashboard.module";
+import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
+import {CoursesComponent} from './modules/dashboard/components/courses/courses.component';
+import {ProfileComponent} from './modules/dashboard/components/profile/profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AuthenticateComponent,
     ToastComponent,
-    HomeComponent,
-    NavbarComponent,
-    CollapseNavbarDirective
+    PageNotFoundComponent,
+    CoursesComponent,
+    ProfileComponent
   ],
   imports: [
-    HttpClientModule,
     BrowserModule,
-    BrowserAnimationsModule,
-    MatInputModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatIconModule,
-    AppRoutingModule,
-    RouterModule,
-    MatChipsModule,
+    RouterOutlet,
+
+    RoutingModule,
+    AuthenticateModule,
+    DashboardModule
   ],
   providers: [
-    AuthenticationController,
-    AuthenticationService,
-    HttpClient,
-    JwtHelperService,
     ToastService,
-    ToastComponent,
-    AuthenticatorService,
-    AuthenticatorController,
-    UserService,
-    UserController,
-
-    {provide: JWT_OPTIONS, useValue: JWT_OPTIONS},
+    ToastComponent
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

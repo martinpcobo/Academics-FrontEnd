@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Academics-FrontEnd';
+  theme: EThemeOptions = EThemeOptions.DARK_THEME;
+
+  protected readonly EThemeOptions = EThemeOptions;
+
+}
+
+enum EThemeOptions {
+  LIGHT_THEME,
+  DARK_THEME
 }
