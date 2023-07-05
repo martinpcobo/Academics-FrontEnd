@@ -1,6 +1,6 @@
 export default class Authenticator {
   // ! Attributes
-  private id?: String | undefined;
+  private identifier: String;
   private name?: String | undefined;
   private public_key?: String | undefined;
   private authenticatorId?: String | undefined;
@@ -8,58 +8,64 @@ export default class Authenticator {
   private aaguid?: String | undefined;
 
   // ! Constructor
-  public constructor() {
+  public constructor(authenticator_instance: Authenticator) {
+    this.identifier = authenticator_instance.identifier;
+    this.name = authenticator_instance.name;
+    this.public_key = authenticator_instance.public_key;
+    this.authenticatorId = authenticator_instance.authenticatorId;
+    this.signature_count = authenticator_instance.signature_count;
+    this.aaguid = authenticator_instance.aaguid;
   }
 
   // ! Methods
   // * Getters
-  public get getId(): String | undefined {
-    return this.id;
+  public getIdentifier(): String {
+    return this.identifier;
   }
 
-  public get getName(): String | undefined {
+  public getName(): String | undefined {
     return this.name;
   }
 
-  public get getPublicKey(): String | undefined {
+  public getPublicKey(): String | undefined {
     return this.public_key;
   }
 
-  public get getAuthenticatorId(): String | undefined {
+  public getAuthenticatorId(): String | undefined {
     return this.authenticatorId;
   }
 
-  public get getSignatureCount(): String | undefined {
+  public getSignatureCount(): String | undefined {
     return this.signature_count;
   }
 
-  public get getAaguid(): String | undefined {
+  public getAaguid(): String | undefined {
     return this.aaguid;
   }
 
   // * Setters
 
-  public set setId(value: String | undefined) {
-    this.id = value;
+  public setIdentifier(value: String) {
+    this.identifier = value;
   }
 
-  public set setName(value: String | undefined) {
+  public setName(value: String | undefined) {
     this.name = value;
   }
 
-  public set setPublicKey(value: String | undefined) {
+  public setPublicKey(value: String | undefined) {
     this.public_key = value;
   }
 
-  public set setAuthenticatorId(value: String | undefined) {
+  public setAuthenticatorId(value: String | undefined) {
     this.authenticatorId = value;
   }
 
-  public set setSignatureCount(value: String | undefined) {
+  public setSignatureCount(value: String | undefined) {
     this.signature_count = value;
   }
 
-  public set setAaguid(value: String | undefined) {
+  public setAaguid(value: String | undefined) {
     this.aaguid = value;
   }
 }

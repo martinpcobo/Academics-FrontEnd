@@ -1,4 +1,4 @@
-<aside class="navbar navbar-collapsed" navbarCollapseDirective>
+<aside class="navbar navbar-collapsed {{this.theme_service.getThemeCSSClass()}}" navbarCollapseDirective>
   <div class="navbar__header">
     <div class="navbar__header__logo">
       <img
@@ -58,7 +58,7 @@
       </div>
       <div class="profile__info">
         <div class="profile__info__name">
-          <p>Martin Perez Cobo</p>
+          <p>{{this.user?.getName()}}</p>
         </div>
         <div class="profile__info__details">
           <p>Student</p>

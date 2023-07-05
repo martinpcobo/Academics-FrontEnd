@@ -1,72 +1,79 @@
 export default class User {
-  private id?: String;
+  private identifier: String;
   private firstName?: String;
   private lastName?: String;
   private name?: String;
-  private verifiedEmail?: String;
+  private verifiedEmail: String;
   private unverifiedEmail?: String;
   private emailVerificationCode?: String;
 
-  public constructor() {
+  constructor(user_instance: User) {
+    this.identifier = user_instance.identifier;
+    this.firstName = user_instance.firstName;
+    this.lastName = user_instance.lastName;
+    this.name = user_instance.name;
+    this.verifiedEmail = user_instance.verifiedEmail;
+    this.unverifiedEmail = user_instance.unverifiedEmail;
+    this.emailVerificationCode = user_instance.emailVerificationCode;
   };
 
   // ! Methods
   // * Getters
-  public get getId(): String | undefined {
-    return this.id;
+  public getIdentifier(): String {
+    return this.identifier;
   }
 
-  public get getFirstName(): String | undefined {
+  public getFirstName(): String | undefined {
     return this.firstName;
   }
 
-  public get getLastName(): String | undefined {
+  public getLastName(): String | undefined {
     return this.lastName;
   }
 
-  public get getName(): String | undefined {
+  public getName(): String | undefined {
     return this.name;
   }
 
-  public get getVerifiedEmail(): String | undefined {
+  public getVerifiedEmail(): String {
     return this.verifiedEmail;
   }
 
-  public get getUnverifiedEmail(): String | undefined {
+  public getUnverifiedEmail(): String | undefined {
     return this.unverifiedEmail;
   }
 
-  public get getEmailVerificationCode(): String | undefined {
+  public getEmailVerificationCode(): String | undefined {
     return this.emailVerificationCode;
   }
 
   // * Setters
-  public set setId(value: String) {
-    this.id = value;
+  public setIdentifier(value: String) {
+    this.identifier = value;
   }
 
-  public set setFirstName(value: String) {
+  public setFirstName(value: String) {
     this.firstName = value;
   }
 
-  public set setLastName(value: String) {
+  public setLastName(value: String) {
     this.lastName = value;
   }
 
-  public set setName(value: String) {
+  public setName(value: String) {
     this.name = value;
   }
 
-  public set setVerifiedEmail(value: String) {
+  public setVerifiedEmail(value: String) {
     this.verifiedEmail = value;
   }
 
-  public set setUnverifiedEmail(value: String) {
+  public setUnverifiedEmail(value: String) {
     this.unverifiedEmail = value;
 
   }
 
-  public set setEmailVerificationCode(value: String) {
+  public setEmailVerificationCode(value: String) {
     this.emailVerificationCode = value;
   }
 }

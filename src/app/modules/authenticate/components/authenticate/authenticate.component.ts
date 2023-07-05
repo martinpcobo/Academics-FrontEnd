@@ -1,6 +1,6 @@
 import {FormControl, Validators} from "@angular/forms";
 import {Component} from "@angular/core";
-import AuthenticationService from "../../services/AuthenticationService";
+import AuthenticationService from "../../../../services/AuthenticationService";
 import AuthLoginDetails from "../../../../models/dtos/AuthLoginDetails";
 import ToastService from "../../../../services/ToastService";
 import UserService from "../../services/UserService";
@@ -12,7 +12,6 @@ import {Router} from "@angular/router";
   selector: 'app-authenticate',
   templateUrl: './authenticate.component.html',
   styleUrls: ['./authenticate.component.scss'],
-  providers: [AuthenticationService]
 })
 export class AuthenticateComponent {
   protected auth_type: AuthStagesEnum = AuthStagesEnum.EMAIL;
@@ -24,7 +23,7 @@ export class AuthenticateComponent {
 
   constructor(
     private auth_service: AuthenticationService,
-    private authenticator_service: AuthenticatorService,
+    protected authenticator_service: AuthenticatorService,
     private user_service: UserService,
     private toast_service: ToastService,
     private router: Router,
@@ -47,21 +46,26 @@ export class AuthenticateComponent {
       if (await this.authenticator_service.userHasAuthenticators(this.email.value)) {
         this.auth_type = AuthStagesEnum.WEBAUTHNLOGIN;
         await this.submitWebAuthn();
-        return;
+      } else {
+        this.auth_type = AuthStagesEnum.CREDENTIALS;
       }
-      this.auth_type = AuthStagesEnum.CREDENTIALS;
     } else {
       this.email.markAsTouched();
     }
   }
 
-  protected submitPassword(): void {
+  protected async submitPassword(): Promise<void> {
     if (this.password.valid) {
       let authLoginDetails = new AuthLoginDetails();
       authLoginDetails.setUsername(String(this.email.value));
       authLoginDetails.setPassword(String(this.password.value));
 
-      this.auth_service.authenticatePassword(authLoginDetails)
+      if (await this.auth_service.authenticatePassword(authLoginDetails)) {
+
+        this.router.navigate(['/']);
+      } else {
+        this.auth_type = AuthStagesEnum.CREDENTIALS;
+      }
     } else {
       this.password.markAsTouched();
     }

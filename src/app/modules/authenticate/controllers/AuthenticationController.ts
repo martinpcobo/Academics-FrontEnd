@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import AuthLoginDetails from "../../../models/dtos/AuthLoginDetails";
+import User from "../../../models/User";
 
 @Injectable()
 export default class AuthenticationController {
@@ -15,7 +16,20 @@ export default class AuthenticationController {
   // ! Traditional AuthenticationService Requests
   // * Login using Username and Password
   public authenticatePassword(credentials: AuthLoginDetails): Observable<String> {
-    return this.http.post<String>(this.server_url + '/api/auth/login', credentials);
+    return this.http.post(this.server_url + '/api/auth/login', credentials, {
+      responseType: 'text',
+    });
+  }
+
+  public changePassword(user_id: String, old_password: String, new_password: String, token: String): Observable<User> {
+    return this.http.put<User>(this.server_url + '/api/user/' + user_id + '/password', {
+      oldPassword: old_password,
+      newPassword: new_password
+    }, {
+      headers: {
+        'Authentication': 'Bearer ' + token
+      }
+    });
   }
 
   // ! WebAuthn AuthenticationService Requests
@@ -29,7 +43,9 @@ export default class AuthenticationController {
 
   // * End Authn AuthenticationService Registration
   public endAuthnRegistration(credentials: AuthLoginDetails): Observable<String> {
-    return this.http.post<String>(this.server_url + '/api/auth/webauthn/register/end', credentials);
+    return this.http.post(this.server_url + '/api/auth/webauthn/register/end', credentials, {
+      responseType: 'text',
+    });
   }
 
   // * Start Authn AuthenticationService Login
@@ -42,7 +58,7 @@ export default class AuthenticationController {
     return this.http.post(this.server_url + '/api/auth/webauthn/login/end',
       {
         username: credentials.getUsername(),
-        publicKey: JSON.stringify(credentials.getPublicKey())
+        publicKey: credentials.getPublicKey()
       },
       {
         responseType: 'text'

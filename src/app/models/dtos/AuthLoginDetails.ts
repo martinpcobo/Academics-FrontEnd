@@ -1,10 +1,8 @@
-import {PublicKeyCredentialWithAssertionJSON} from "@github/webauthn-json";
-
 export default class AuthLoginDetails {
   // ! Attributes
   private username?: String;
   private authenticatorName?: String;
-  private publicKey?: PublicKeyCredentialWithAssertionJSON;
+  private publicKey?: String;
   private password?: String;
 
   // ! Constructors
@@ -21,7 +19,7 @@ export default class AuthLoginDetails {
     return this.authenticatorName;
   }
 
-  public getPublicKey(): PublicKeyCredentialWithAssertionJSON | undefined {
+  public getPublicKey(): String | undefined {
     return this.publicKey;
   }
 
@@ -38,7 +36,7 @@ export default class AuthLoginDetails {
     this.authenticatorName = authenticator_name;
   }
 
-  public setPublicKey(public_key: PublicKeyCredentialWithAssertionJSON | undefined): void {
+  public setPublicKey(public_key: String | undefined): void {
     this.publicKey = public_key;
   }
 

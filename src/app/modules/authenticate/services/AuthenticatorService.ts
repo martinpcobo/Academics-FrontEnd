@@ -1,25 +1,99 @@
 import {Injectable} from "@angular/core";
 import AuthenticatorController from "../controllers/AuthenticatorController";
+import Authenticator from "../../../models/Authenticator";
+import ToastService from "../../../services/ToastService";
+import {ToastType} from "../../../components/toast/toast.component";
+import AuthenticationService from "../../../services/AuthenticationService";
 
 // Define the service as injectable and include the AuthenticationController provider
 @Injectable()
 export default class AuthenticatorService {
 
-  constructor(private authenticator_controller: AuthenticatorController) {
+  constructor(
+    private authenticator_controller: AuthenticatorController,
+    private authentication_service: AuthenticationService,
+    private toast_service: ToastService
+  ) {
   }
 
   // ! Business Logic
-  // * Authenticator Exists
+  // * Authenticators Exist
   public userHasAuthenticators(username: String): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
+    return new Promise<boolean>(async (resolve, reject) => {
+      let token: String | null = await this.authentication_service.getToken();
       this.authenticator_controller.getAuthenticatorCountByUsername(username).subscribe({
         next: (res: Number) => {
           resolve(res.valueOf() > 0);
         },
         error: (error) => {
           resolve(false);
-        }
+        },
       });
+    });
+  }
+
+  // * Get Authenticators
+  public getAuthenticatorsFromUser(user_id: String): Promise<Authenticator[]> {
+    return new Promise<Authenticator[]>(async (resolve, reject) => {
+      let token: String | null = await this.authentication_service.getToken();
+      if (token) {
+        this.authenticator_controller.getAuthenticatorsFromUser(user_id, token).subscribe({
+          next: (res: Authenticator[]) => {
+            resolve(res.map((auth_instance: Authenticator) => {
+              return new Authenticator(auth_instance as Authenticator);
+            }));
+          },
+          error: (error) => {
+            resolve([]);
+          },
+        });
+      } else {
+        console.log("Could not perform this operation, user is not logged in.");
+      }
+    });
+  }
+
+  // * Delete Authenticator
+  public removeAuthenticator(authenticator_id: String, user_id: String): Promise<boolean> {
+    return new Promise<boolean>(async (resolve, reject) => {
+      let token: String | null = await this.authentication_service.getToken();
+      if (token) {
+        this.authenticator_controller.removeAuthenticator(authenticator_id, user_id, token).subscribe({
+          next: (res: any) => {
+            this.toast_service.setMessage("Authenticator", "Authenticator deleted successfully!", ToastType.SUCCESS)
+            resolve(true);
+          },
+          error: (error) => {
+            console.log(error);
+            this.toast_service.setMessage("Authenticator", "Failed to delete authenticator!", ToastType.DANGER)
+            resolve(false);
+          },
+        });
+      } else {
+        console.log("Could not perform this operation, user is not logged in.");
+      }
+    });
+  }
+
+  // * Rename Authenticator
+  public modifyAuthenticatorName(authenticator_id: String, user_id: String, new_name: String): Promise<boolean> {
+    return new Promise<boolean>(async (resolve, reject) => {
+      let token: String | null = await this.authentication_service.getToken();
+      if (token) {
+        this.authenticator_controller.modifyAuthenticatorName(authenticator_id, user_id, new_name, token).subscribe({
+          next: (res: any) => {
+            this.toast_service.setMessage("Authenticator", "Authenticator renamed successfully!", ToastType.SUCCESS)
+            resolve(true);
+          },
+          error: (error) => {
+            console.log(error);
+            this.toast_service.setMessage("Authenticator", "Failed to rename authenticator!", ToastType.DANGER)
+            resolve(false);
+          },
+        });
+      } else {
+        console.log("Could not perform this operation, user is not logged in.");
+      }
     });
   }
 

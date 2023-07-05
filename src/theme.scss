@@ -2,6 +2,8 @@
 
 @include mat.core();
 
+//mat.$theme-ignore-duplication-warnings: true;
+
 // ! Custom Palette
 $academics-primary-palette: (
   50: #f8e8ed,

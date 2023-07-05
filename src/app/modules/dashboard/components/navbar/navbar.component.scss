@@ -4,7 +4,6 @@
 
 $debug-borders: none;
 
-
 .navbar {
   border: $debug-borders;
 
@@ -245,6 +244,10 @@ $debug-borders: none;
       }
     }
   }
+}
+
+.dark-theme {
+  background: #2426276b;
 }
 
 .navbar-collapsed {

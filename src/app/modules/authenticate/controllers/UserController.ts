@@ -1,5 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
+import User from "../../../models/User";
 
 @Injectable()
 export default class UserController {
@@ -11,5 +13,11 @@ export default class UserController {
   }
 
   // ! User Requests
-
+  public getUserInformation(user_id: String, token: String): Observable<User> {
+    return this.http.get<User>(this.server_url + '/api/user/' + user_id, {
+      headers: {
+        'Authentication': 'Bearer ' + token,
+      }
+    });
+  }
 }

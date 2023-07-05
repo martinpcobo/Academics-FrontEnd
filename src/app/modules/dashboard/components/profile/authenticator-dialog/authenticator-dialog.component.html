@@ -1,0 +1,13 @@
+<div>
+  <div mat-dialog-content>
+    <mat-form-field>
+      <mat-label>{{data.title}}</mat-label>
+      <input matInput [formControl]="this.new_name">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="this.submitResponse(null)">Cancel</button>
+    <button mat-button (click)="this.submitResponse(this.new_name.value)">Submit</button>
+  </div>
+
+</div>

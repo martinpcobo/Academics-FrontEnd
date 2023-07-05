@@ -1,0 +1,19 @@
+<mat-card>
+  <div class="authenticator">
+    <span>{{this.authenticator?.getName() ? this.authenticator?.getName() : 'No name'}}</span>
+    <button mat-icon-button [matMenuTriggerFor]="authenticator_menu" aria-label="Menu of options for authenticator.">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </div>
+</mat-card>
+
+<mat-menu #authenticator_menu="matMenu">
+  <button mat-menu-item (click)="this.handleAuthenticatorDelete()">
+    <mat-icon>delete</mat-icon>
+    <span>Delete</span>
+  </button>
+  <button mat-menu-item (click)="this.handleAuthenticatorNameChange()">
+    <mat-icon>edit</mat-icon>
+    <span>Edit name</span>
+  </button>
+</mat-menu>

@@ -7,13 +7,15 @@ import {CollapseNavbarDirective} from "./directives/CollapseNavbarDirective";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
+import ThemeService from "../../services/ThemeService";
+import AuthenticationService from "../../services/AuthenticationService";
 
 
 @NgModule({
   declarations: [
     HomeComponent,
     NavbarComponent,
-    CollapseNavbarDirective,
+    CollapseNavbarDirective
   ],
   imports: [
     CommonModule,
@@ -25,9 +27,13 @@ import {MatButtonModule} from "@angular/material/button";
     MatButtonModule,
     RouterOutlet
   ],
+  providers: [
+    ThemeService,
+    AuthenticationService,
+  ],
   exports: [
     HomeComponent,
-    NavbarComponent,
+    NavbarComponent
   ]
 })
 export class DashboardModule {
