@@ -8,11 +8,12 @@ import {NgIf} from "@angular/common";
 import ToastService from "../../../../../services/ToastService";
 import {ToastType} from "../../../../../components/toast/toast.component";
 import {MatIconModule} from "@angular/material/icon";
+import {Subject} from "../../../../../../models/Subject";
 
 @Component({
   selector: 'app-user-dialog',
-  templateUrl: './user-dialog.component.html',
-  styleUrls: ['./user-dialog.component.scss'],
+  templateUrl: './subject-dialog.component.html',
+  styleUrls: ['./subject-dialog.component.scss'],
   imports: [
     MatDialogModule,
     MatInputModule,
@@ -23,18 +24,18 @@ import {MatIconModule} from "@angular/material/icon";
   ],
   standalone: true
 })
-export class UserDialogComponent {
+export class SubjectDialogComponent {
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: IUserDialogData,
-    protected dialogRef: MatDialogRef<UserDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: ISubjectDialogData,
+    protected dialogRef: MatDialogRef<SubjectDialogComponent>,
     protected toast_service: ToastService,
   ) {
   }
 
   protected hide_sensitive_data: boolean = true;
-  protected user_details: FormGroup = new FormGroup({
-    first_name: new FormControl(this.data.user_instance?.getFirstName(), [Validators.required]),
-    last_name: new FormControl(this.data.user_instance?.getLastName(), [Validators.required]),
+  protected subject_details: FormGroup = new FormGroup({
+    first_name: new FormControl(this.data.subject_instance?.getName(), [Validators.required]),
+    last_name: new FormControl(this.data.subject_details?.get, [Validators.required]),
     email: new FormControl(this.data.user_instance?.getVerifiedEmail(), [Validators.required, Validators.email]),
     password: new FormControl(Array(10).fill("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$").map(function (x) {
       return x[Math.floor(Math.random() * x.length)]
@@ -87,16 +88,14 @@ export class UserDialogComponent {
   protected cancelResponse() {
     this.dialogRef.close(null);
   }
-
-  protected readonly EUserDialogMode = EUserDialogMode;
 }
 
-interface IUserDialogData {
-  DIALOG_MODE: EUserDialogMode,
-  user_instance: User | undefined
+interface ISubjectDialogData {
+  DIALOG_MODE: ESubjectDialogModes,
+  subject_instance: Subject | undefined
 }
 
-export enum EUserDialogMode {
+export enum ESubjectDialogModes {
   CREATE,
   EDIT
 }

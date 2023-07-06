@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import UserController from "../controllers/UserController";
-import User from "../../../models/User";
-import AuthenticationService from "../../../services/AuthenticationService";
+import User from "../../models/User";
+import AuthenticationService from "./AuthenticationService";
 
 // Define the service as injectable and include the AuthenticationController provider
 @Injectable()

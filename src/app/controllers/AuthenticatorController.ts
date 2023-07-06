@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import Authenticator from "../../../models/Authenticator";
+import Authenticator from "../../models/Authenticator";
 
 @Injectable()
 export default class AuthenticatorController {

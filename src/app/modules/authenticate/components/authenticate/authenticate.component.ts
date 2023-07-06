@@ -1,10 +1,10 @@
 import {FormControl, Validators} from "@angular/forms";
 import {Component} from "@angular/core";
 import AuthenticationService from "../../../../services/AuthenticationService";
-import AuthLoginDetails from "../../../../models/dtos/AuthLoginDetails";
+import AuthLoginDetails from "../../../../../models/dtos/AuthLoginDetails";
 import ToastService from "../../../../services/ToastService";
-import UserService from "../../services/UserService";
-import AuthenticatorService from "../../services/AuthenticatorService";
+import UserService from "../../../../services/UserService";
+import AuthenticatorService from "../../../../services/AuthenticatorService";
 import {Router} from "@angular/router";
 import ThemeService, {EThemeOptions} from "../../../../services/ThemeService";
 

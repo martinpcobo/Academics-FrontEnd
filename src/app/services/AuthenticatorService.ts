@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
 import AuthenticatorController from "../controllers/AuthenticatorController";
-import Authenticator from "../../../models/Authenticator";
-import ToastService from "../../../services/ToastService";
-import {ToastType} from "../../../components/toast/toast.component";
-import AuthenticationService from "../../../services/AuthenticationService";
+import Authenticator from "../../models/Authenticator";
+import ToastService from "./ToastService";
+import {ToastType} from "../components/toast/toast.component";
+import AuthenticationService from "./AuthenticationService";
 
 // Define the service as injectable and include the AuthenticationController provider
 @Injectable()

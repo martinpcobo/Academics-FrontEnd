@@ -8,11 +8,11 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatChipsModule} from "@angular/material/chips";
 import {HttpClientModule} from "@angular/common/http";
 import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
-import UserService from "./services/UserService";
-import UserController from "./controllers/UserController";
+import UserService from "../../services/UserService";
+import UserController from "../../controllers/UserController";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {BrowserModule} from "@angular/platform-browser";
-import AuthenticatorService from "./services/AuthenticatorService";
+import AuthenticatorService from "../../services/AuthenticatorService";
 import AuthenticationService from "../../services/AuthenticationService";
 import {MatMenuModule} from "@angular/material/menu";
 
@@ -38,10 +38,6 @@ import {MatMenuModule} from "@angular/material/menu";
   ],
   providers: [
     JwtHelperService,
-    AuthenticatorService,
-    AuthenticationService,
-    UserService,
-    UserController,
     {provide: JWT_OPTIONS, useValue: JWT_OPTIONS}
   ]
 })

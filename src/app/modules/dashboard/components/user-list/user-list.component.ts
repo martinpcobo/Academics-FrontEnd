@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import UserService from "../../../authenticate/services/UserService";
-import User from "../../../../models/User";
+import UserService from "../../../../services/UserService";
+import User from "../../../../../models/User";
 import {MatTableDataSource} from "@angular/material/table";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
@@ -53,10 +53,10 @@ export class UserListComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(async (result: {
-      user_instance: User,
+      user_instance: User | undefined,
       password: String
     }) => {
-      if (await this.user_service.createUser(result.user_instance, result.password)) {
+      if (result.user_instance && await this.user_service.createUser(result.user_instance, result.password)) {
         this.toast_service.setMessage("User creation successful", "User has been created.", ToastType.SUCCESS);
 
         this.user_source = new MatTableDataSource<User>(await this.user_service.getUsers());

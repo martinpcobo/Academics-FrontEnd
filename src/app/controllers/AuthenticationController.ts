@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import AuthLoginDetails from "../../../models/dtos/AuthLoginDetails";
-import User from "../../../models/User";
+import AuthLoginDetails from "../../models/dtos/AuthLoginDetails";
+import User from "../../models/User";
 
 @Injectable()
 export default class AuthenticationController {

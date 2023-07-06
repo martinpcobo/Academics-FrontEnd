@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import ThemeService from "../../../../services/ThemeService";
 import AuthenticationService from "../../../../services/AuthenticationService";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import AuthenticatorService from "../../../authenticate/services/AuthenticatorService";
-import Authenticator from "../../../../models/Authenticator";
-import User from "../../../../models/User";
-import AuthLoginDetails from "../../../../models/dtos/AuthLoginDetails";
+import AuthenticatorService from "../../../../services/AuthenticatorService";
+import Authenticator from "../../../../../models/Authenticator";
+import User from "../../../../../models/User";
+import AuthLoginDetails from "../../../../../models/dtos/AuthLoginDetails";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {AuthenticatorDialogComponent} from "./authenticator-dialog/authenticator-dialog.component";
 

@@ -16,6 +16,11 @@ import {CoursesComponent} from "./components/courses/courses.component";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {ClassListComponent} from "./components/class-list/class-list.component";
 import {SubjectListComponent} from "./components/subject-list/subject-list.component";
+import ClassService from "./services/ClassService";
+import SubjectService from "./services/SubjectService";
+import {ClassController} from "./controllers/ClassController";
+import {SubjectController} from "./controllers/SubjectController";
+import {HttpClient} from "@angular/common/http";
 
 
 @NgModule({
@@ -42,8 +47,12 @@ import {SubjectListComponent} from "./components/subject-list/subject-list.compo
     MatPaginatorModule
   ],
   providers: [
-    ThemeService,
-    AuthenticationService,
+    ClassService,
+    ClassController,
+    HttpClient,
+
+    SubjectService,
+    SubjectController
   ],
   exports: [
     NavbarComponent

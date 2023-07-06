@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import Authenticator from "../../../../../models/Authenticator";
-import AuthenticatorService from "../../../../authenticate/services/AuthenticatorService";
+import Authenticator from "../../../../../../models/Authenticator";
+import AuthenticatorService from "../../../../../services/AuthenticatorService";
 import AuthenticationService from "../../../../../services/AuthenticationService";
-import User from "../../../../../models/User";
+import User from "../../../../../../models/User";
 import {AuthenticatorDialogComponent} from "../authenticator-dialog/authenticator-dialog.component";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 

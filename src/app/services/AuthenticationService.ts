@@ -1,17 +1,17 @@
 import {Injectable} from "@angular/core";
-import User from "../models/User";
+import User from "../../models/User";
 import {Router} from "@angular/router";
 import {JwtHelperService} from "@auth0/angular-jwt";
 import {ToastType} from "../components/toast/toast.component";
 import AuthenticationController, {
   WebAuthnLoginResponse
-} from "../modules/authenticate/controllers/AuthenticationController";
-import AuthLoginDetails from "../models/dtos/AuthLoginDetails";
+} from "../controllers/AuthenticationController";
+import AuthLoginDetails from "../../models/dtos/AuthLoginDetails";
 import * as WebAuthn from "@github/webauthn-json";
 import {CredentialCreationOptionsJSON, PublicKeyCredentialWithAttestationJSON} from "@github/webauthn-json";
 import {HttpErrorResponse, HttpStatusCode} from "@angular/common/http";
 import ToastService from "./ToastService";
-import UserController from "../modules/authenticate/controllers/UserController";
+import UserController from "../controllers/UserController";
 import {Observable, Subject} from "rxjs";
 
 @Injectable({
@@ -24,7 +24,10 @@ export default class AuthenticationService {
 
   private user_subj: Subject<User | null> = new Subject<User | null>();
   private userObserver: Observable<User | null> = this.user_subj.asObservable();
+
   private token: String | null = null;
+  private token_subj: Subject<String | null> = new Subject<String | null>();
+  private tokenObserver: Observable<String | null> = this.token_subj.asObservable();
 
   constructor(private toast_service: ToastService, private auth_controller: AuthenticationController, private router: Router, private jwtHelper: JwtHelperService, private user_controller: UserController) {
     (async () => {
@@ -57,6 +60,10 @@ export default class AuthenticationService {
     return this.token;
   }
 
+  public getTokenObserver(): Observable<String | null> {
+    return this.tokenObserver;
+  }
+
   // * Setters
   private setUser(user: User | null) {
     this.user = user;
@@ -70,6 +77,7 @@ export default class AuthenticationService {
       localStorage.removeItem('token');
     }
     this.token = token;
+    this.token_subj.next(token);
   }
 
   // ! Business Logic

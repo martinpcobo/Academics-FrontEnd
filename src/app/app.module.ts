@@ -21,10 +21,13 @@ import {MatMenuModule} from "@angular/material/menu";
 import AuthenticationService from "./services/AuthenticationService";
 import {ProfileComponent} from "./modules/dashboard/components/profile/profile.component";
 import {AuthenticatorComponent} from "./modules/dashboard/components/profile/authenticator/authenticator.component";
-import AuthenticationController from "./modules/authenticate/controllers/AuthenticationController";
-import AuthenticatorController from "./modules/authenticate/controllers/AuthenticatorController";
+import AuthenticationController from "./controllers/AuthenticationController";
+import AuthenticatorController from "./controllers/AuthenticatorController";
 import {HttpClient} from "@angular/common/http";
 import {DashboardComponent} from './modules/dashboard/dashboard.component';
+import AuthenticatorService from "./services/AuthenticatorService";
+import UserController from "./controllers/UserController";
+import UserService from "./services/UserService";
 
 @NgModule({
   declarations: [
@@ -55,10 +58,16 @@ import {DashboardComponent} from './modules/dashboard/dashboard.component';
     ToastService,
     ToastComponent,
     ThemeService,
-    AuthenticationService,
     HttpClient,
+
     AuthenticationController,
-    AuthenticatorController
+    AuthenticationService,
+
+    AuthenticatorController,
+    AuthenticatorService,
+
+    UserController,
+    UserService
   ],
   bootstrap: [AppComponent]
 })
