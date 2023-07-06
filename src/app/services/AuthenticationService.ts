@@ -134,11 +134,10 @@ export default class AuthenticationService {
   // Change Password
   public async changePassword(old_password: String, new_password: String): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      console.log(this.user);
-      console.log(this.token);
-      if (this.user && this.token) {
+      let user_id: String | undefined = this.user?.getIdentifier();
+      if (this.user && this.token && user_id) {
 
-        this.auth_controller.changePassword(this.user.getIdentifier(), old_password, new_password, this.token).subscribe({
+        this.auth_controller.changePassword(user_id, old_password, new_password, this.token).subscribe({
           next: async (res) => {
             this.setToken(null);
             this.setUser(null);

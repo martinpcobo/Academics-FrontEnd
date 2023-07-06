@@ -58,6 +58,12 @@
                   mat-flat-button
                   type="button">Login
           </button>
+
+          <button (click)="this.auth_type = AuthStagesEnum.EMAIL" *ngIf="auth_type == AuthStagesEnum.CREDENTIALS"
+                  mat-flat-button
+                  type="button">
+            Back
+          </button>
         </div>
       </div>
     </form>
@@ -73,6 +79,32 @@
       </mat-chip>
       <mat-chip (click)="window.open('mailto:biblioteca@ucema.edu.ar', '_self')">
         Bilbioteca
+      </mat-chip>
+
+      <mat-chip (click)="this.theme_service.setTheme(EThemeOptions.DARK_THEME)"
+                *ngIf="this.theme_service.getTheme() == EThemeOptions.LIGHT_THEME"
+      >
+        <div
+          class="d-flex flex-row justify-content-center justify-items-center align-content-center align-items-center column-gap-1">
+          <mat-icon
+            class="d-flex flex-row justify-content-center justify-items-center align-content-center align-items-center">
+            <i class="bi bi-moon-fill" style="font-size: 1.1rem;"></i>
+          </mat-icon>
+          Dark Mode
+        </div>
+      </mat-chip>
+
+      <mat-chip (click)="theme_service.setTheme(EThemeOptions.LIGHT_THEME)"
+                *ngIf="this.theme_service.getTheme() == EThemeOptions.DARK_THEME"
+      >
+        <div
+          class="d-flex flex-row justify-content-center justify-items-center align-content-center align-items-center column-gap-1">
+          <mat-icon
+            class="d-flex flex-row justify-content-center justify-items-center align-content-center align-items-center">
+            <i class="bi bi-sun-fill" style="font-size: 1.25rem;"></i>
+          </mat-icon>
+          Light Mode
+        </div>
       </mat-chip>
     </div>
   </div>

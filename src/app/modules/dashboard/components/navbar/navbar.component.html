@@ -47,6 +47,19 @@
         <p>Grades</p>
       </div>
     </div>
+
+    <div
+      [routerLink]="['/home/user-mgmt']"
+      class="menu-item"
+      routerLinkActive="menu-item-active"
+    >
+      <div class="menu-item__icon">
+        <i class="bi bi-person-add"></i>
+      </div>
+      <div class="menu-item__title">
+        <p>Users</p>
+      </div>
+    </div>
   </div>
   <div class="navbar__config">
     <div
@@ -77,6 +90,23 @@
       </mat-icon>
       <span>Profile</span>
     </button>
+
+    <button mat-menu-item (click)="theme_service.setTheme(EThemeOptions.DARK_THEME)"
+            *ngIf="this.theme_service.getTheme() == EThemeOptions.LIGHT_THEME">
+      <mat-icon>
+        <i class="bi bi-moon-fill"></i>
+      </mat-icon>
+      <span>Dark Mode</span>
+    </button>
+
+    <button mat-menu-item (click)="theme_service.setTheme(EThemeOptions.LIGHT_THEME)"
+            *ngIf="this.theme_service.getTheme() == EThemeOptions.DARK_THEME">
+      <mat-icon>
+        <i class="bi bi-sun-fill"></i>
+      </mat-icon>
+      <span>Light Mode</span>
+    </button>
+
     <button (click)="this.authentication_service.logout()" mat-menu-item>
       <mat-icon>
         <i class="bi bi-door-open"></i>

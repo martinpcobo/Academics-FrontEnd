@@ -5,7 +5,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {FormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'app-authenticator-dialog',
+  selector: 'app-user-dialog',
   templateUrl: './authenticator-dialog.component.html',
   styleUrls: ['./authenticator-dialog.component.css'],
   imports: [

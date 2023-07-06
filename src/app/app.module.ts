@@ -31,15 +31,15 @@ import {HttpClient} from "@angular/common/http";
     ToastComponent,
     PageNotFoundComponent,
     ProfileComponent,
-    AuthenticatorComponent,
-
+    AuthenticatorComponent
   ],
   imports: [
-    BrowserModule,
-    RouterOutlet,
     RoutingModule,
     AuthenticateModule,
     DashboardModule,
+
+    BrowserModule,
+    RouterOutlet,
     MatTabsModule,
     MatInputModule,
     MatIconModule,

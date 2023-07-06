@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import AuthenticationService from "../../../../services/AuthenticationService";
-import ThemeService from "../../../../services/ThemeService";
+import ThemeService, {EThemeOptions} from "../../../../services/ThemeService";
 import User from "../../../../models/User";
 
 @Component({
@@ -20,7 +20,6 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.authentication_service.getUser());
     this.user = this.authentication_service.getUser();
     this.authentication_service.getUserObserver().subscribe({
       next: (new_user: User | null) => {
@@ -31,4 +30,6 @@ export class NavbarComponent implements OnInit {
       }
     });
   }
+
+  protected readonly EThemeOptions = EThemeOptions;
 }

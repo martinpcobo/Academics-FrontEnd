@@ -6,6 +6,7 @@ import {HomeComponent} from "../dashboard/components/home/home.component";
 import {PageNotFoundComponent} from "../../components/page-not-found/page-not-found.component";
 import {CoursesComponent} from "../dashboard/components/courses/courses.component";
 import {ProfileComponent} from "../dashboard/components/profile/profile.component";
+import {UserManagementComponent} from "../dashboard/components/user-management/user-management.component";
 
 
 const routes: Routes = [
@@ -18,7 +19,7 @@ const routes: Routes = [
       {path: 'career', component: HomeComponent},
       {path: 'grades', component: HomeComponent},
       {path: 'profile', component: ProfileComponent},
-
+      {path: 'user-mgmt', component: UserManagementComponent}
     ]
   },
   {path: 'login', component: AuthenticateComponent},

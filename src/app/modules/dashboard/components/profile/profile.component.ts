@@ -54,8 +54,10 @@ export class ProfileComponent implements OnInit {
   // Methods - Business Logic
 
   public async refreshAuthenticators(): Promise<void> {
-    if (this.user) {
-      this.user_authenticators = await this.authenticator_service.getAuthenticatorsFromUser(this.user.getIdentifier());
+    let user_id: String | undefined = this.user?.getIdentifier();
+
+    if (this.user && user_id) {
+      this.user_authenticators = await this.authenticator_service.getAuthenticatorsFromUser(user_id);
     }
   }
 
@@ -73,14 +75,15 @@ export class ProfileComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {
-      if (this.user) {
+      let user_id: String | undefined = this.user?.getIdentifier();
+      if (this.user && user_id) {
         let auth_details: AuthLoginDetails = new AuthLoginDetails();
         auth_details.setUsername(this.user.getVerifiedEmail());
         auth_details.setAuthenticatorName(result.toString());
 
         await this.authentication_service.startAuthnRegistration(auth_details);
 
-        this.user_authenticators = await this.authenticator_service.getAuthenticatorsFromUser(this.user.getIdentifier());
+        this.user_authenticators = await this.authenticator_service.getAuthenticatorsFromUser(user_id);
       }
     });
   }

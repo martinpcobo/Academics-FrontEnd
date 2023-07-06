@@ -6,6 +6,7 @@ import ToastService from "../../../../services/ToastService";
 import UserService from "../../services/UserService";
 import AuthenticatorService from "../../services/AuthenticatorService";
 import {Router} from "@angular/router";
+import ThemeService, {EThemeOptions} from "../../../../services/ThemeService";
 
 
 @Component({
@@ -20,6 +21,7 @@ export class AuthenticateComponent {
   protected hide_password: boolean = true;
   protected readonly AuthStagesEnum = AuthStagesEnum;
   protected readonly window = window;
+  protected readonly EThemeOptions = EThemeOptions;
 
   constructor(
     private auth_service: AuthenticationService,
@@ -27,6 +29,7 @@ export class AuthenticateComponent {
     private user_service: UserService,
     private toast_service: ToastService,
     private router: Router,
+    protected theme_service: ThemeService
   ) {
   }
 

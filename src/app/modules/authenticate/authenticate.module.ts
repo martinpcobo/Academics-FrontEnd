@@ -14,6 +14,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {BrowserModule} from "@angular/platform-browser";
 import AuthenticatorService from "./services/AuthenticatorService";
 import AuthenticationService from "../../services/AuthenticationService";
+import {MatMenuModule} from "@angular/material/menu";
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import AuthenticationService from "../../services/AuthenticationService";
     MatChipsModule,
     HttpClientModule,
     BrowserModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatMenuModule
   ],
   exports: [
     AuthenticateComponent

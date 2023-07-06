@@ -1,25 +1,27 @@
 export default class User {
-  private identifier: String;
-  private firstName?: String;
-  private lastName?: String;
-  private name?: String;
-  private verifiedEmail: String;
-  private unverifiedEmail?: String;
-  private emailVerificationCode?: String;
+  private identifier: String | undefined;
+  private firstName: String | undefined;
+  private lastName: String | undefined;
+  private name: String | undefined;
+  private verifiedEmail: String | undefined;
+  private unverifiedEmail: String | undefined;
+  private emailVerificationCode: String | undefined;
 
-  constructor(user_instance: User) {
-    this.identifier = user_instance.identifier;
-    this.firstName = user_instance.firstName;
-    this.lastName = user_instance.lastName;
-    this.name = user_instance.name;
-    this.verifiedEmail = user_instance.verifiedEmail;
-    this.unverifiedEmail = user_instance.unverifiedEmail;
-    this.emailVerificationCode = user_instance.emailVerificationCode;
+  constructor(user_instance?: User) {
+    if (user_instance) {
+      this.identifier = user_instance.identifier;
+      this.firstName = user_instance.firstName;
+      this.lastName = user_instance.lastName;
+      this.name = user_instance.name;
+      this.verifiedEmail = user_instance.verifiedEmail;
+      this.unverifiedEmail = user_instance.unverifiedEmail;
+      this.emailVerificationCode = user_instance.emailVerificationCode;
+    }
   };
 
   // ! Methods
   // * Getters
-  public getIdentifier(): String {
+  public getIdentifier(): String | undefined {
     return this.identifier;
   }
 
@@ -35,7 +37,7 @@ export default class User {
     return this.name;
   }
 
-  public getVerifiedEmail(): String {
+  public getVerifiedEmail(): String | undefined {
     return this.verifiedEmail;
   }
 

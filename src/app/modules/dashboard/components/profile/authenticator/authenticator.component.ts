@@ -49,8 +49,10 @@ export class AuthenticatorComponent implements OnInit {
     dialogRef.afterClosed().subscribe(async (result) => {
       if (!result) return;
 
-      if (this.user && this.authenticator) {
-        await this.authenticator_service.modifyAuthenticatorName(this.authenticator.getIdentifier(), this.user.getIdentifier(), result.toString());
+      let user_id: String | undefined = this.user?.getIdentifier();
+
+      if (this.user && this.authenticator && user_id) {
+        await this.authenticator_service.modifyAuthenticatorName(this.authenticator.getIdentifier(), user_id, result.toString());
         this.refreshAuthenticators.emit(null);
       } else {
         console.log("Could not find the Authenticator to modify or the User who owns it.");
@@ -59,8 +61,9 @@ export class AuthenticatorComponent implements OnInit {
   }
 
   async handleAuthenticatorDelete() {
-    if (this.authenticator && this.user) {
-      await this.authenticator_service.removeAuthenticator(this.authenticator.getIdentifier(), this.user.getIdentifier())
+    let user_id: String | undefined = this.user?.getIdentifier();
+    if (this.authenticator && this.user && user_id) {
+      await this.authenticator_service.removeAuthenticator(this.authenticator.getIdentifier(), user_id)
 
       this.refreshAuthenticators.emit(null);
     } else {
