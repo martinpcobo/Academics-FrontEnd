@@ -1,19 +1,19 @@
-<div class="users_container mat-app-background">
-  <div class="users_container__header">
-    <div class="users_container__header__filter">
+<div class="class_container mat-app-background">
+  <div class="class_container__header">
+    <div class="class_container__header__filter">
       <mat-form-field class="w-100">
         <mat-label>Filter</mat-label>
         <input matInput (keyup)="applyFilter($event)" #input>
       </mat-form-field>
     </div>
-    <div class="users_container__header__actions">
+    <div class="class_container__header__actions">
       <button mat-button (click)="this.handleUserCreation()">
         <mat-icon>add</mat-icon>
         <span>Create new user</span>
       </button>
     </div>
   </div>
-  <div class="users_container__body">
+  <div class="class_container__body">
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="this.user_source" matSort>
         <!-- Name Column -->

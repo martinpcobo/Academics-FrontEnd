@@ -24,6 +24,7 @@ import {AuthenticatorComponent} from "./modules/dashboard/components/profile/aut
 import AuthenticationController from "./modules/authenticate/controllers/AuthenticationController";
 import AuthenticatorController from "./modules/authenticate/controllers/AuthenticatorController";
 import {HttpClient} from "@angular/common/http";
+import {DashboardComponent} from './modules/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {HttpClient} from "@angular/common/http";
     ToastComponent,
     PageNotFoundComponent,
     ProfileComponent,
-    AuthenticatorComponent
+    AuthenticatorComponent,
+    DashboardComponent,
   ],
   imports: [
     RoutingModule,

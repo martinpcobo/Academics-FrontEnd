@@ -2,24 +2,28 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from "@angular/router";
 import {AuthenticateComponent} from "../authenticate/components/authenticate/authenticate.component";
-import {HomeComponent} from "../dashboard/components/home/home.component";
 import {PageNotFoundComponent} from "../../components/page-not-found/page-not-found.component";
 import {CoursesComponent} from "../dashboard/components/courses/courses.component";
 import {ProfileComponent} from "../dashboard/components/profile/profile.component";
-import {UserManagementComponent} from "../dashboard/components/user-management/user-management.component";
+import {UserListComponent} from "../dashboard/components/user-list/user-list.component";
+import {DashboardComponent} from "../dashboard/dashboard.component";
+import {ClassListComponent} from "../dashboard/components/class-list/class-list.component";
+import {SubjectListComponent} from "../dashboard/components/subject-list/subject-list.component";
 
 
 const routes: Routes = [
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {
     path: 'home',
-    component: HomeComponent,
+    component: DashboardComponent,
     children: [
       {path: 'courses', component: CoursesComponent},
-      {path: 'career', component: HomeComponent},
-      {path: 'grades', component: HomeComponent},
+      {path: 'career', component: DashboardComponent},
+      {path: 'grades', component: DashboardComponent},
       {path: 'profile', component: ProfileComponent},
-      {path: 'user-mgmt', component: UserManagementComponent}
+      {path: 'users', component: UserListComponent},
+      {path: 'subjects', component: SubjectListComponent},
+      {path: 'classes', component: ClassListComponent}
     ]
   },
   {path: 'login', component: AuthenticateComponent},

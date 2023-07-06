@@ -10,12 +10,11 @@ import ToastService from "../../../../services/ToastService";
 import {ToastType} from "../../../../components/toast/toast.component";
 
 @Component({
-  selector: 'app-user-management',
-  templateUrl: './user-management.component.html',
-  styleUrls: ['./user-management.component.scss']
+  selector: 'app-user-list',
+  templateUrl: './user-list.component.html',
+  styleUrls: ['./user-list.component.scss']
 })
-export class UserManagementComponent implements OnInit, AfterViewInit {
-  // Define a user_source variable using the MatTableDataSource
+export class UserListComponent implements OnInit, AfterViewInit {
   protected user_source: MatTableDataSource<User> = new MatTableDataSource<User>([]);
   protected table_columns: string[] = ['name', 'last_name', 'email', 'actions'];
 
@@ -87,7 +86,7 @@ export class UserManagementComponent implements OnInit, AfterViewInit {
     });
   }
 
-  protected async handleUserDeltion(user_id: String): Promise<void> {
+  protected async handleUserDeletion(user_id: String): Promise<void> {
     if (await this.user_service.deleteUser(user_id)) {
       this.toast_service.setMessage("User deletion successful", "Selected user deleted successfully.", ToastType.SUCCESS);
 
