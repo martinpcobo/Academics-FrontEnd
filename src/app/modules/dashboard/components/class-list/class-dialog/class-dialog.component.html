@@ -1,0 +1,123 @@
+<div>
+  <div mat-dialog-content>
+    <mat-label *ngIf="this.data.DIALOG_MODE == EClassDialogMode.CREATE">New class creation</mat-label>
+    <mat-label *ngIf="this.data.DIALOG_MODE == EClassDialogMode.EDIT">Existing class edition</mat-label>
+
+    <form [formGroup]="this.class_details" class="d-flex flex-column">
+      <!-- Name -->
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Programación III - Comisión 2023" formControlName="name" required>
+        <mat-error
+          *ngIf="this.class_details.get('name')?.invalid">Invalid name
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Description -->
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <input matInput placeholder="Descripción..." formControlName="description" required>
+        <mat-error
+          *ngIf="this.class_details.get('description')?.invalid">Invalid description
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Subject -->
+      <mat-form-field class="example-full-width">
+        <mat-label>Subject</mat-label>
+        <input
+          [matAutocomplete]="subjectAutocomplete"
+          aria-label="Subject"
+          formControlName="subject"
+          matInput
+          placeholder="Start typing..."
+          type="text"
+        >
+        <mat-autocomplete autoActiveFirstOption #subjectAutocomplete="matAutocomplete">
+          <mat-option
+            *ngFor="let subject of this.filtered_subjects | async"
+            [value]="subject.getName()"
+            (click)="this.selected_subject = subject;"
+          >
+            {{subject.getName()}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <!-- Dates -->
+      <mat-form-field>
+        <mat-label>Dates</mat-label>
+        <mat-date-range-input [rangePicker]="classRangePicker">
+          <input matStartDate placeholder="Start date" formControlName="start_date">
+          <input matEndDate placeholder="End date" formControlName="end_date">
+        </mat-date-range-input>
+        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="classRangePicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #classRangePicker></mat-date-range-picker>
+      </mat-form-field>
+
+      <!-- Professors References -->
+      <mat-form-field *ngIf="this.data.DIALOG_MODE == EClassDialogMode.EDIT">
+        <mat-label>Professors</mat-label>
+        <mat-chip-grid #professorChipGrid aria-label="Professors selection">
+          <mat-chip-row *ngFor="let professor of this.selected_professors"
+                        (removed)="removeProfessor(professor)">
+            {{professor.getUser()?.getName()}} ({{professor.getUser()?.getVerifiedEmail()}})
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+        <input placeholder="Start typing..." #professorInput formControlName="professors"
+               [matChipInputFor]="professorChipGrid" [matAutocomplete]="professorAutocomplete"
+               [matChipInputSeparatorKeyCodes]="this.separatorKeysCodes"
+               (matChipInputTokenEnd)="this.addProfessor($event)"/>
+        <mat-autocomplete #professorAutocomplete="matAutocomplete"
+                          (optionSelected)="this.autocompleteProfessor($event)">
+          <mat-option *ngFor="let professor of filtered_professors | async"
+                      [value]="professor.getUser()?.getIdentifier()">
+            {{professor.getUser()?.getName()}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <!-- Student References -->
+      <mat-form-field *ngIf="this.data.DIALOG_MODE == EClassDialogMode.EDIT">
+        <mat-label>Students</mat-label>
+        <mat-chip-grid #studentChipGrid aria-label="Students selection">
+          <mat-chip-row *ngFor="let student of this.selected_students"
+                        (removed)="removeStudent(student)">
+            {{student.getUser()?.getName()}} ({{student.getUser()?.getVerifiedEmail()}})
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+        <input placeholder="Start typing..." #studentInput formControlName="students"
+               [matChipInputFor]="studentChipGrid" [matAutocomplete]="studentAutocomplete"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               (matChipInputTokenEnd)="addStudent($event)"/>
+        <mat-autocomplete #studentAutocomplete="matAutocomplete"
+                          (optionSelected)="this.autocompleteStudent($event)">
+          <mat-option *ngFor="let student of this.filtered_students | async"
+                      [value]="student.getUser()?.getIdentifier()">
+            {{student.getUser()?.getName()}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+  </div>
+  <div mat-dialog-actions class="d-flex flex-row justify-content-end">
+    <button mat-button (click)="this.cancelResponse()">Cancel</button>
+    <button *ngIf="this.data.DIALOG_MODE == EClassDialogMode.CREATE" [disabled]="this.class_details.invalid"
+            mat-button
+            color="primary"
+            (click)="this.submitClassCreation()">Create
+    </button>
+    <button *ngIf="this.data.DIALOG_MODE == EClassDialogMode.EDIT" [disabled]="this.class_details.invalid"
+            mat-button
+            color="primary"
+            (click)="this.submitClassEdit()">Edit
+    </button>
+  </div>
+</div>

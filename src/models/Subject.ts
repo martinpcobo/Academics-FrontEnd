@@ -1,18 +1,15 @@
-import {Class} from "./Class";
-
 export class Subject {
   // Attributes
   private id: String | undefined;
   private name: String | undefined;
-  private classes: Class[] | undefined;
 
   // Constructor
 
-
-  public constructor(subject_instance: Subject) {
-    this.setName(subject_instance.getName());
-    this.setIdentifier(subject_instance.getIdentifier());
-    this.setClasses(subject_instance.getClasses());
+  public constructor(subject_instance: Subject | undefined) {
+    if (subject_instance) {
+      this.setName(subject_instance.name);
+      this.setIdentifier(subject_instance.id);
+    }
   }
 
 // Getters
@@ -24,10 +21,6 @@ export class Subject {
     return this.name;
   }
 
-  public getClasses(): Class[] | undefined {
-    return this.classes;
-  }
-
   // Setters
   public setIdentifier(id: String | undefined): void {
     this.id = id;
@@ -37,7 +30,4 @@ export class Subject {
     this.name = name;
   }
 
-  public setClasses(classes: Class[] | undefined): void {
-    this.classes = classes;
-  }
 }

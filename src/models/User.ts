@@ -1,5 +1,5 @@
 export default class User {
-  private identifier: String | undefined;
+  private id: String | undefined;
   private firstName: String | undefined;
   private lastName: String | undefined;
   private name: String | undefined;
@@ -9,7 +9,7 @@ export default class User {
 
   constructor(user_instance?: User) {
     if (user_instance) {
-      this.identifier = user_instance.identifier;
+      this.id = user_instance.id;
       this.firstName = user_instance.firstName;
       this.lastName = user_instance.lastName;
       this.name = user_instance.name;
@@ -22,7 +22,7 @@ export default class User {
   // ! Methods
   // * Getters
   public getIdentifier(): String | undefined {
-    return this.identifier;
+    return this.id;
   }
 
   public getFirstName(): String | undefined {
@@ -51,7 +51,7 @@ export default class User {
 
   // * Setters
   public setIdentifier(value: String) {
-    this.identifier = value;
+    this.id = value;
   }
 
   public setFirstName(value: String) {

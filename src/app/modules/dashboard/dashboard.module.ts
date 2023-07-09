@@ -6,8 +6,6 @@ import {CollapseNavbarDirective} from "./directives/CollapseNavbarDirective";
 import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
-import ThemeService from "../../services/ThemeService";
-import AuthenticationService from "../../services/AuthenticationService";
 import {UserListComponent} from "./components/user-list/user-list.component";
 import {MatInputModule} from "@angular/material/input";
 import {MatTableModule} from "@angular/material/table";
@@ -21,6 +19,11 @@ import SubjectService from "./services/SubjectService";
 import {ClassController} from "./controllers/ClassController";
 import {SubjectController} from "./controllers/SubjectController";
 import {HttpClient} from "@angular/common/http";
+import {MatNativeDateModule} from "@angular/material/core";
+import ProfessorService from "./services/ProfessorService";
+import {ProfessorController} from "./controllers/ProfessorController";
+import StudentService from "./services/StudentService";
+import {StudentController} from "./controllers/StudentController";
 
 
 @NgModule({
@@ -44,11 +47,16 @@ import {HttpClient} from "@angular/common/http";
     MatInputModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatNativeDateModule
   ],
   providers: [
     ClassService,
     ClassController,
+    StudentService,
+    StudentController,
+    ProfessorService,
+    ProfessorController,
     HttpClient,
 
     SubjectService,

@@ -1,16 +1,14 @@
 import {Component, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
-import User from "../../../../../models/User";
-import UserService from "../../../../services/UserService";
 import ToastService from "../../../../services/ToastService";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {Subject} from "../../../../../models/Subject";
 import SubjectService from "../../services/SubjectService";
-import {EUserDialogMode, UserDialogComponent} from "../user-list/user-dialog/user-dialog.component";
+import {EUserDialogMode} from "../user-list/user-dialog/user-dialog.component";
 import {ToastType} from "../../../../components/toast/toast.component";
-import {SubjectDialogComponent} from "./subject-dialog/subject-dialog.component";
+import {ISubjectDialogResult, SubjectDialogComponent} from "./subject-dialog/subject-dialog.component";
 
 @Component({
   selector: 'app-subject-list',
@@ -24,7 +22,6 @@ export class SubjectListComponent {
   constructor(protected subject_service: SubjectService, protected toast_service: ToastService, public dialog: MatDialog,) {
   }
 
-  // Define the paginator and sort variables using the ViewChild decorator
   @ViewChild(MatPaginator) paginator: MatPaginator | null = null;
   @ViewChild(MatSort) sort: MatSort | null = null;
 
@@ -33,13 +30,14 @@ export class SubjectListComponent {
   }
 
   protected async refreshSource(): Promise<void> {
-    this.subject_source = new MatTableDataSource<ESubjectSource>();
-    (await this.subject_service.getAllSubjects()).forEach((subject_instance: Subject) => {
-      this.subject_source.data.push({
-        id: subject_instance.getIdentifier(),
-        name: subject_instance.getName()
+    this.subject_source = new MatTableDataSource<ESubjectSource>((await this.subject_service.getAllSubjects()).map((subject_instance: Subject) => {
+        return {
+          id: subject_instance.getIdentifier(),
+          name: subject_instance.getName(),
+          subject_instance: subject_instance
+        };
       })
-    });
+    );
   }
 
   async ngAfterViewInit(): Promise<void> {
@@ -65,31 +63,51 @@ export class SubjectListComponent {
       width: '50%',
     });
 
-    dialogRef.afterClosed().subscribe(async (result: {
-      subject_instance: Subject | undefined
-    }) => {
+    dialogRef.afterClosed().subscribe(async (result: ISubjectDialogResult) => {
       if (result.subject_instance && await this.subject_service.createSubject(result.subject_instance)) {
-        this.toast_service.setMessage("User creation successful", "User has been created.", ToastType.SUCCESS);
+        this.toast_service.setMessage("Subject creation successful", "Subject has been created.", ToastType.SUCCESS);
 
-        this.user_source = new MatTableDataSource<User>(await this.user_service.getUsers());
+        await this.refreshSource();
       } else {
-        this.toast_service.setMessage("User creation failed", "User could not be created.", ToastType.DANGER);
+        this.toast_service.setMessage("Subject creation failed", "Subject could not be created.", ToastType.DANGER);
       }
     });
   }
 
+  protected async handleSubjectEdit(subject_instance: Subject): Promise<void> {
+    const dialogRef: MatDialogRef<SubjectDialogComponent> = this.dialog.open(SubjectDialogComponent, {
+      data: {
+        DIALOG_MODE: EUserDialogMode.EDIT,
+        subject_instance: subject_instance
+      },
+      width: '50%',
+    });
 
-  protected async handleSubjectEdit(id: String | undefined): Promise<void> {
-    throw new Error();
+    dialogRef.afterClosed().subscribe(async (result: ISubjectDialogResult) => {
+      if (result.subject_instance && await this.subject_service.modifySubject(result.subject_instance)) {
+        this.toast_service.setMessage("Subject successfully modified", "Selected subject has been modified.", ToastType.SUCCESS);
+
+        await this.refreshSource();
+      } else {
+        this.toast_service.setMessage("Subject edition failed", "Subject could not be modified.", ToastType.DANGER);
+      }
+    });
   }
 
   protected async handleSubjectDeletion(id: String | undefined): Promise<void> {
-    throw new Error();
+    if (id && await this.subject_service.deleteSubject(id)) {
+      this.toast_service.setMessage("Subject successfully deleted", "Selected subject has been deleted.", ToastType.SUCCESS);
+
+      await this.refreshSource();
+    } else {
+      this.toast_service.setMessage("Subject deletion failed", "Subject could not be deleted.", ToastType.DANGER);
+    }
   }
 
 }
 
 interface ESubjectSource {
   name: String | undefined,
-  id: String | undefined
+  id: String | undefined,
+  subject_instance: Subject
 }

@@ -1,6 +1,6 @@
 export default class Authenticator {
   // ! Attributes
-  private identifier: String;
+  private id: String;
   private name?: String | undefined;
   private public_key?: String | undefined;
   private authenticatorId?: String | undefined;
@@ -9,7 +9,7 @@ export default class Authenticator {
 
   // ! Constructor
   public constructor(authenticator_instance: Authenticator) {
-    this.identifier = authenticator_instance.identifier;
+    this.id = authenticator_instance.id;
     this.name = authenticator_instance.name;
     this.public_key = authenticator_instance.public_key;
     this.authenticatorId = authenticator_instance.authenticatorId;
@@ -20,7 +20,7 @@ export default class Authenticator {
   // ! Methods
   // * Getters
   public getIdentifier(): String {
-    return this.identifier;
+    return this.id;
   }
 
   public getName(): String | undefined {
@@ -46,7 +46,7 @@ export default class Authenticator {
   // * Setters
 
   public setIdentifier(value: String) {
-    this.identifier = value;
+    this.id = value;
   }
 
   public setName(value: String | undefined) {

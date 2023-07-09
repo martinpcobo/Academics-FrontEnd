@@ -19,6 +19,7 @@ export default class UserService {
     return new Promise<User[]>((resolve, reject) => {
       this.user_controller.getUsersList(this.authentication_service.getToken()).subscribe({
         next: (users: User[]) => {
+          console.log(users);
           resolve(users.map((user: Object) => {
             return new User(user as User);
           }));

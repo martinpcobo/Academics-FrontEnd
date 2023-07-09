@@ -49,11 +49,14 @@
         <!-- Professors Column -->
         <ng-container matColumnDef="professors">
           <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Professors</strong></th>
-          <td mat-cell *matCellDef="let row" class="d-flex flex-row">
+          <td mat-cell *matCellDef="let row">
             <span *ngFor="let professor_instance of row.professors">
-              {{professor_instance.getName()}}
-              <span *ngIf="row.professors.indexOf(professor_instance) != row.professors.length - 1 && row.professors.length > 1">, </span>
+              {{professor_instance?.getUser()?.getName()}}
+
+              <span
+                *ngIf="row.professors.length > 1 && row.professors[row.professors.length - 1] != professor_instance">,</span>
             </span>
+            {{row.professors.length == 0 ? 'No Professor' : ''}}
           </td>
         </ng-container>
 
@@ -65,7 +68,7 @@
               <mat-icon>delete</mat-icon>
               <span>Delete</span>
             </button>
-            <button mat-button (click)="this.handleClassEdition(row.id)">
+            <button mat-button (click)="this.handleClassEdition(row.class_instance)">
               <mat-icon>edit</mat-icon>
               <span>Edit</span>
             </button>

@@ -14,7 +14,7 @@ export default class SubjectService {
   public async getAllSubjects(): Promise<Subject[]> {
     return new Promise<Subject[]>((resolve, reject) => {
       this.subject_controller.getAllSubjects(this.authentication_service.getToken()).subscribe({
-        next: (subjects: Subject[]) => {
+        next: (subjects: Object[]) => {
           resolve(subjects.map((subject_instance: Object) => {
             return new Subject(subject_instance as Subject);
           }))
@@ -27,10 +27,38 @@ export default class SubjectService {
   }
 
   // * Create Subject
-  public async createSubject(): Promise<boolean> {
+  public async createSubject(subject_instance: Subject): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-      this.subject_controller.createSubject(this.authentication_service.getToken()).subscribe({
+      this.subject_controller.createSubject(subject_instance, this.authentication_service.getToken()).subscribe({
         next: (res: Subject) => {
+          resolve(true);
+        },
+        error: (error: any) => {
+          resolve(false)
+        },
+      });
+    })
+  }
+
+  // * Modify a Subject
+  public async modifySubject(subject_instance: Subject): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.subject_controller.modifySubject(subject_instance, this.authentication_service.getToken()).subscribe({
+        next: (res: Subject) => {
+          resolve(true);
+        },
+        error: (error: any) => {
+          resolve(false)
+        },
+      });
+    })
+  }
+
+  // * Delete a Subject
+  public async deleteSubject(subject_id: String): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.subject_controller.deleteSubject(subject_id, this.authentication_service.getToken()).subscribe({
+        next: (res: String) => {
           resolve(true);
         },
         error: (error: any) => {

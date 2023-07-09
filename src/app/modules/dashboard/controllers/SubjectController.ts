@@ -25,11 +25,30 @@ export class SubjectController {
   }
 
   // * Create Subject
-  public createSubject(token: String | null): Observable<Subject> {
-    return this.http.post<Subject>(this.server_url + '/api/subject/', {
+  public createSubject(subject_instance: Subject, token: String | null): Observable<Subject> {
+    return this.http.post<Subject>(this.server_url + '/api/subject/', subject_instance, {
       headers: {
         Authentication: 'Bearer ' + token,
       }
+    });
+  }
+
+  // * Modify Subject
+  public modifySubject(subject_instance: Subject, token: String | null): Observable<Subject> {
+    return this.http.put<Subject>(this.server_url + '/api/subject/', subject_instance, {
+      headers: {
+        Authentication: 'Bearer ' + token,
+      }
+    });
+  }
+
+  // * Delete a Subject
+  public deleteSubject(subject_id: String, token: String | null): Observable<String> {
+    return this.http.delete(this.server_url + '/api/subject/' + subject_id, {
+      headers: {
+        Authentication: 'Bearer ' + token,
+      },
+      responseType: 'text'
     });
   }
 }

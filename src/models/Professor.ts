@@ -14,9 +14,9 @@ export class Professor {
   // ! Constructors
 
   public constructor(professor_instance: Professor) {
-    this.setIdentifier(professor_instance.getIdentifier());
-    this.setCourses(professor_instance.getCourses());
-    this.setUser(professor_instance.getUser());
+    this.setIdentifier(professor_instance.id);
+    this.setCourses(professor_instance.courses);
+    this.setUser(professor_instance.user);
   }
 
 // ! Methods
@@ -43,8 +43,6 @@ export class Professor {
   }
 
   public setUser(user: User | undefined): void {
-    if (this.user != null && this.user.getIdentifier() == user?.getIdentifier()) return;
-
     this.user = user;
   }
 }

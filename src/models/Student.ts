@@ -13,11 +13,13 @@ export class Student {
   private user: User | undefined;
 
   // ! Constructors
-  public constructor(student_instance: Student) {
-    this.setIdentifier(student_instance.getIdentifier());
-    this.setCourses(student_instance.getCourses());
-    this.setUser(student_instance.getUser());
-    this.setGrades(student_instance.getGrades());
+  public constructor(student_instance: Student | undefined) {
+    if (student_instance) {
+      this.setIdentifier(student_instance.id);
+      this.setCourses(student_instance.courses);
+      this.setUser(student_instance.user);
+      this.setGrades(student_instance.grades);
+    }
   }
 
 // ! Methods
@@ -48,8 +50,6 @@ export class Student {
   }
 
   public setUser(user: User | undefined): void {
-    if (this.user != null && this.user.getIdentifier() == user?.getIdentifier()) return;
-
     this.user = user;
   }
 

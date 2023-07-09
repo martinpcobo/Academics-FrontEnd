@@ -8,10 +8,13 @@ export class Class extends Course {
 
   // ! Constructors
 
-  public constructor(class_instance: Class) {
-    super(class_instance);
-    this.setIdentifier(class_instance.getIdentifier());
-    this.setSubject(class_instance.getSubject());
+  public constructor(class_instance: Class | undefined) {
+    if (class_instance) {
+      super(class_instance);
+      this.setSubject(class_instance.subject);
+    } else {
+      super(undefined);
+    }
   }
 
   // ! Methods
@@ -22,7 +25,6 @@ export class Class extends Course {
 
   // * Setters
   public setSubject(subject_instance: Subject | undefined): void {
-    if (this.subject != null && this.subject.getIdentifier() == subject_instance?.getIdentifier()) return;
     this.subject = subject_instance;
   }
 }

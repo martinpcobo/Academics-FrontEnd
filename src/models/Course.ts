@@ -18,15 +18,17 @@ export class Course {
 
   // ! Constructors
 
-  public constructor(course_instance: Course) {
-    this.setIdentifier(course_instance.getIdentifier());
-    this.setStudents(course_instance.getStudents());
-    this.setProfessors(course_instance.getProfessors());
-    this.setEndDate(course_instance.getEndDate());
-    this.setStartDate(course_instance.getStartDate());
-    this.setDescription(course_instance.getDescription());
-    this.setName(course_instance.getName());
-    this.setGrades(course_instance.getGrades());
+  public constructor(course_instance: Course | undefined) {
+    if (course_instance) {
+      this.setIdentifier(course_instance.id);
+      this.setStudents(course_instance.students);
+      this.setProfessors(course_instance.professors);
+      this.setEndDate(course_instance.endDate);
+      this.setStartDate(course_instance.startDate);
+      this.setDescription(course_instance.description);
+      this.setName(course_instance.name);
+      this.setGrades(course_instance.grades);
+    }
   }
 
 // ! Methods

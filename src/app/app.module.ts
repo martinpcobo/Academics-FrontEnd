@@ -28,6 +28,9 @@ import {DashboardComponent} from './modules/dashboard/dashboard.component';
 import AuthenticatorService from "./services/AuthenticatorService";
 import UserController from "./controllers/UserController";
 import UserService from "./services/UserService";
+import {MatTableModule} from "@angular/material/table";
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatChipsModule} from "@angular/material/chips";
 
 @NgModule({
   declarations: [
@@ -42,7 +45,8 @@ import UserService from "./services/UserService";
     RoutingModule,
     AuthenticateModule,
     DashboardModule,
-
+    MatChipsModule,
+    
     BrowserModule,
     RouterOutlet,
     MatTabsModule,
@@ -52,7 +56,9 @@ import UserService from "./services/UserService";
     ReactiveFormsModule,
     MatDialogModule,
     MatCardModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTableModule,
+    MatPaginatorModule
   ],
   providers: [
     ToastService,
