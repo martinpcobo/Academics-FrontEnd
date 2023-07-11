@@ -31,6 +31,7 @@ import UserService from "./services/UserService";
 import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatChipsModule} from "@angular/material/chips";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -46,7 +47,7 @@ import {MatChipsModule} from "@angular/material/chips";
     AuthenticateModule,
     DashboardModule,
     MatChipsModule,
-    
+
     BrowserModule,
     RouterOutlet,
     MatTabsModule,
@@ -65,6 +66,7 @@ import {MatChipsModule} from "@angular/material/chips";
     ToastComponent,
     ThemeService,
     HttpClient,
+    MatSnackBar,
 
     AuthenticationController,
     AuthenticationService,
