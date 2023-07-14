@@ -24,6 +24,15 @@ export class ClassController {
     });
   }
 
+  // * Get a Class by Id
+  public getClassById(class_id: String, token: String | null): Observable<Object> {
+    return this.http.get<Object>(this.server_url + '/api/class/' + class_id, {
+      headers: {
+        'Authentication': 'Bearer ' + token
+      }
+    });
+  }
+
   // * Create a Class
   public createClass(class_instance: Class, token: String | null): Observable<Class> {
     return this.http.post<Class>(this.server_url + '/api/class/', class_instance, {

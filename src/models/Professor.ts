@@ -13,10 +13,12 @@ export class Professor {
 
   // ! Constructors
 
-  public constructor(professor_instance: Professor) {
-    this.setIdentifier(professor_instance.id);
-    this.setCourses(professor_instance.courses);
-    this.setUser(professor_instance.user);
+  public constructor(professor_instance: Professor | undefined) {
+    if(professor_instance) {
+      this.setIdentifier(professor_instance.id);
+      this.setCourses(professor_instance.courses);
+      this.setUser(professor_instance.user);
+    }
   }
 
 // ! Methods

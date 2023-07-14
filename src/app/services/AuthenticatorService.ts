@@ -1,8 +1,7 @@
 import {Injectable} from "@angular/core";
 import AuthenticatorController from "../controllers/AuthenticatorController";
 import Authenticator from "../../models/Authenticator";
-import ToastService from "./ToastService";
-import {ToastType} from "../components/toast/toast.component";
+import ToastService, {ToastType} from "./ToastService";
 import AuthenticationService from "./AuthenticationService";
 
 // Define the service as injectable and include the AuthenticationController provider
@@ -38,8 +37,9 @@ export default class AuthenticatorService {
       let token: String | null = await this.authentication_service.getToken();
       if (token) {
         this.authenticator_controller.getAuthenticatorsFromUser(user_id, token).subscribe({
-          next: (res: Authenticator[]) => {
-            resolve(res.map((auth_instance: Authenticator) => {
+          next: (res: Object[]) => {
+            console.log(res);
+            resolve(res.map((auth_instance: Object) => {
               return new Authenticator(auth_instance as Authenticator);
             }));
           },
@@ -60,12 +60,11 @@ export default class AuthenticatorService {
       if (token) {
         this.authenticator_controller.removeAuthenticator(authenticator_id, user_id, token).subscribe({
           next: (res: any) => {
-            this.toast_service.setMessage("Authenticator", "Authenticator deleted successfully!", ToastType.SUCCESS)
+            this.toast_service.setMessage("Authenticator deleted successfully", ToastType.SUCCESS)
             resolve(true);
           },
           error: (error) => {
-            console.log(error);
-            this.toast_service.setMessage("Authenticator", "Failed to delete authenticator!", ToastType.DANGER)
+            this.toast_service.setMessage("Failed to delete authenticator" , ToastType.DANGER)
             resolve(false);
           },
         });
@@ -82,12 +81,11 @@ export default class AuthenticatorService {
       if (token) {
         this.authenticator_controller.modifyAuthenticatorName(authenticator_id, user_id, new_name, token).subscribe({
           next: (res: any) => {
-            this.toast_service.setMessage("Authenticator", "Authenticator renamed successfully!", ToastType.SUCCESS)
+            this.toast_service.setMessage("Authenticator renamed successfully", ToastType.SUCCESS)
             resolve(true);
           },
           error: (error) => {
-            console.log(error);
-            this.toast_service.setMessage("Authenticator", "Failed to rename authenticator!", ToastType.DANGER)
+            this.toast_service.setMessage("Failed to rename authenticator", ToastType.DANGER)
             resolve(false);
           },
         });

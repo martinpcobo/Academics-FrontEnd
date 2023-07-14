@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, OnInit} from "@angular/core";
 import {Observable, Subject} from "rxjs";
 
 @Injectable()
@@ -7,9 +7,17 @@ export default class ThemeService {
   private theme_subj: Subject<EThemeOptions> = new Subject<EThemeOptions>();
   public theme_subscriber: Observable<EThemeOptions> = this.theme_subj.asObservable();
 
+  constructor() {
+    let theme: string | null = localStorage.getItem('theme');
+    if (theme) {
+      this.theme = parseInt(theme);
+    }
+  }
+
   public setTheme(theme_option: EThemeOptions): void {
     this.theme = theme_option;
     this.theme_subj.next(theme_option);
+    localStorage.setItem('theme', theme_option.toString());
   }
 
   public getTheme(): EThemeOptions {

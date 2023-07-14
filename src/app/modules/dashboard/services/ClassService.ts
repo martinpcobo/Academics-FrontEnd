@@ -9,6 +9,7 @@ import ProfessorService from "./ProfessorService";
 import {Professor} from "../../../../models/Professor";
 import User from "../../../../models/User";
 import StudentService from "./StudentService";
+import GradeService from "./GradeService";
 
 @Injectable()
 export default class ClassService {
@@ -16,7 +17,7 @@ export default class ClassService {
     private class_controller: ClassController,
     private authentication_service: AuthenticationService,
     private professor_service: ProfessorService,
-    private student_service: StudentService
+    private student_service: StudentService,
   ) {
   }
 
@@ -51,9 +52,7 @@ export default class ClassService {
             }
             class_ind.setStudents(students);
 
-            class_ind.setGrades(class_obj.grades.map((grade: any) => {
-              return new Grade(grade as Grade);
-            }));
+            class_ind.setGrades([]);
 
             classes_list.push(class_ind);
           }
@@ -65,6 +64,38 @@ export default class ClassService {
         },
       });
     })
+  }
+
+  // * Get a Class by Id
+  public async getClassById(class_id: String): Promise<Class> {
+    return new Promise<Class>( (resolve, reject) => {
+      this.class_controller.getClassById(class_id, this.authentication_service.getToken()).subscribe({
+        next: async (class_obj: any) => {
+
+
+          let class_instance: Class = new Class(class_obj as Class);
+          class_instance.setSubject(new Subject(class_obj.subject as Subject));
+
+          let professors_list: Professor[] = [];
+          for (const professor_id of class_obj.professors) {
+            professors_list.push(await this.professor_service.getProfessor(professor_id));
+          }
+          class_instance.setProfessors(professors_list);
+
+          let student_list: Student[] = [];
+          for (const student_id of class_obj.students) {
+            student_list.push(await this.student_service.getStudent(student_id));
+          }
+          class_instance.setStudents(student_list);
+
+          class_instance.setGrades([]);
+
+          resolve(class_instance);
+        }, error: (error: any) => {
+          reject(error);
+        }
+      })
+    });
   }
 
   // * Create a Class

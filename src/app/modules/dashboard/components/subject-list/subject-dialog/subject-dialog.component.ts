@@ -4,8 +4,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
-import ToastService from "../../../../../services/ToastService";
-import {ToastType} from "../../../../../components/toast/toast.component";
+import ToastService, {ToastType} from "../../../../../services/ToastService";
 import {MatIconModule} from "@angular/material/icon";
 import {Subject} from "../../../../../../models/Subject";
 
@@ -41,7 +40,7 @@ export class SubjectDialogComponent {
       this.subject_details.invalid ||
       this.subject_details.controls['name'].value.length == 0
     ) {
-      this.toast_service.setMessage("Subject creation failed", "Missing information for user creation", ToastType.DANGER);
+      this.toast_service.setMessage("Missing information for user creation", ToastType.DANGER);
       return;
     }
 
@@ -58,7 +57,7 @@ export class SubjectDialogComponent {
       this.subject_details.invalid ||
       this.subject_details.controls['name'].value.length == 0
     ) {
-      this.toast_service.setMessage("Subject creation failed", "Missing information for user creation", ToastType.DANGER);
+      this.toast_service.setMessage("Missing information for user creation", ToastType.DANGER);
       return;
     }
     let subject_instance: Subject = new Subject(this.data.subject_instance);

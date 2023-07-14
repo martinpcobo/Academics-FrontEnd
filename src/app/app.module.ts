@@ -3,7 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {RouterOutlet} from "@angular/router";
-import {ToastComponent} from "./components/toast/toast.component";
 import {RoutingModule} from "./modules/routing/routing.module";
 import {AuthenticateModule} from "./modules/authenticate/authenticate.module";
 import ToastService from "./services/ToastService";
@@ -32,38 +31,40 @@ import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import { ClassDetailsComponent } from './modules/dashboard/components/class/class-details/class-details.component';
+import {MatSortModule} from "@angular/material/sort";
 
 @NgModule({
   declarations: [
     AppComponent,
-    ToastComponent,
     PageNotFoundComponent,
     ProfileComponent,
     AuthenticatorComponent,
     DashboardComponent,
+    ClassDetailsComponent,
   ],
-  imports: [
-    RoutingModule,
-    AuthenticateModule,
-    DashboardModule,
-    MatChipsModule,
+    imports: [
+        RoutingModule,
+        AuthenticateModule,
+        DashboardModule,
+        MatChipsModule,
 
-    BrowserModule,
-    RouterOutlet,
-    MatTabsModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-    ReactiveFormsModule,
-    MatDialogModule,
-    MatCardModule,
-    MatMenuModule,
-    MatTableModule,
-    MatPaginatorModule
-  ],
+        BrowserModule,
+        RouterOutlet,
+        MatTabsModule,
+        MatInputModule,
+        MatIconModule,
+        MatButtonModule,
+        ReactiveFormsModule,
+        MatDialogModule,
+        MatCardModule,
+        MatMenuModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule
+    ],
   providers: [
     ToastService,
-    ToastComponent,
     ThemeService,
     HttpClient,
     MatSnackBar,

@@ -12,7 +12,7 @@ import {MatTableModule} from "@angular/material/table";
 import {MatSortModule} from "@angular/material/sort";
 import {CoursesComponent} from "./components/courses/courses.component";
 import {MatPaginatorModule} from "@angular/material/paginator";
-import {ClassListComponent} from "./components/class-list/class-list.component";
+import {ClassListComponent} from "./components/class/class-list/class-list.component";
 import {SubjectListComponent} from "./components/subject-list/subject-list.component";
 import ClassService from "./services/ClassService";
 import SubjectService from "./services/SubjectService";
@@ -24,6 +24,10 @@ import ProfessorService from "./services/ProfessorService";
 import {ProfessorController} from "./controllers/ProfessorController";
 import StudentService from "./services/StudentService";
 import {StudentController} from "./controllers/StudentController";
+import GradeService from "./services/GradeService";
+import {GradeController} from "./controllers/GradeController";
+import {GradesComponent} from "./components/grades/grades.component";
+import {ClassComponent} from "./components/class/class.component";
 
 
 @NgModule({
@@ -33,7 +37,9 @@ import {StudentController} from "./controllers/StudentController";
     CollapseNavbarDirective,
     UserListComponent,
     ClassListComponent,
-    SubjectListComponent
+    SubjectListComponent,
+    GradesComponent,
+    ClassComponent
   ],
   imports: [
     CommonModule,
@@ -54,6 +60,8 @@ import {StudentController} from "./controllers/StudentController";
     ClassService,
     ClassController,
     StudentService,
+    GradeService,
+    GradeController,
     StudentController,
     ProfessorService,
     ProfessorController,

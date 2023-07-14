@@ -34,6 +34,10 @@ span {
         width: 10vw;
         border-radius: 10%;
       }
+      i {
+        font-size: 8vw;
+        border-radius: 10%;
+      }
     }
 
     .profile__header__info {
@@ -121,7 +125,7 @@ span {
 
         .authenticators_list {
           width: 100%;
-          
+
           display: flex;
           flex-flow: row wrap;
 

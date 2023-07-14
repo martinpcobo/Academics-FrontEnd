@@ -1,5 +1,6 @@
 import {Course} from "./Course";
 import {Student} from "./Student";
+import {Class} from "./Class";
 
 export class Grade {
   // ! Attributes
@@ -8,17 +9,19 @@ export class Grade {
   private value: Number | undefined
 
   // * Relationships
-  private course: Course | undefined;
+  private course: Class | undefined;
 
   private student: Student | undefined;
 
   // ! Constructor
 
-  public constructor(grade_instance: Grade) {
-    this.setIdentifier(grade_instance.getIdentifier());
-    this.setCourse(grade_instance.getCourse());
-    this.setStudent(grade_instance.getStudent());
-    this.setValue(grade_instance.getValue());
+  public constructor(grade_instance: Grade | undefined) {
+    if(grade_instance) {
+      this.setIdentifier(grade_instance.id);
+      this.setClass(grade_instance.course);
+      this.setStudent(grade_instance.student);
+      this.setValue(grade_instance.value);
+    }
   }
 
 // ! Methods
@@ -27,7 +30,7 @@ export class Grade {
     return this.id;
   }
 
-  public getCourse(): Course | undefined {
+  public getCourse(): Class | undefined {
     return this.course;
   }
 
@@ -44,7 +47,7 @@ export class Grade {
     this.id = id;
   }
 
-  public setCourse(course: Course | undefined): void {
+  public setClass(course: Class | undefined): void {
     this.course = course;
   }
 

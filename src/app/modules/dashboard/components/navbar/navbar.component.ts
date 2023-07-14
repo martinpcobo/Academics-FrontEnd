@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import AuthenticationService from "../../../../services/AuthenticationService";
 import ThemeService, {EThemeOptions} from "../../../../services/ThemeService";
-import User from "../../../../../models/User";
+import User, {ERoles} from "../../../../../models/User";
 
 @Component({
   selector: 'app-navbar',
@@ -31,5 +31,10 @@ export class NavbarComponent implements OnInit {
     });
   }
 
+  protected parseUserRoles() : String | undefined{
+    return this.user?.getRoles()?.toString().split(',').map((role) => { return role[0] + role.toLowerCase().slice(1, role.length); }).join(', ').replace('None', '');
+  }
+
   protected readonly EThemeOptions = EThemeOptions;
+  protected readonly ERoles = ERoles;
 }

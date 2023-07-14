@@ -13,7 +13,8 @@ export default class UserController {
   }
 
   // ! User Requests
-  public getUserInformation(user_id: String, token: String): Observable<User> {
+  // * Get a user by id
+  public getUserById(user_id: String, token: String | null): Observable<User> {
     return this.http.get<User>(this.server_url + '/api/user/' + user_id, {
       headers: {
         'Authentication': 'Bearer ' + token,
@@ -21,6 +22,7 @@ export default class UserController {
     });
   }
 
+  // * Get all Users
   public getUsersList(token: String | null): Observable<User[]> {
     return this.http.get<User[]>(this.server_url + '/api/user/', {
       headers: {

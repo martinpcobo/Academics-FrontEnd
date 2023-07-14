@@ -6,8 +6,7 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {EUserDialogMode, UserDialogComponent} from "./user-dialog/user-dialog.component";
-import ToastService from "../../../../services/ToastService";
-import {ToastType} from "../../../../components/toast/toast.component";
+import ToastService, {ToastType} from "../../../../services/ToastService";
 
 @Component({
   selector: 'app-user-list',
@@ -57,11 +56,11 @@ export class UserListComponent implements OnInit, AfterViewInit {
       password: String
     }) => {
       if (result.user_instance && await this.user_service.createUser(result.user_instance, result.password)) {
-        this.toast_service.setMessage("User creation successful", "User has been created.", ToastType.SUCCESS);
+        this.toast_service.setMessage("User has been created", ToastType.SUCCESS);
 
         this.user_source = new MatTableDataSource<User>(await this.user_service.getUsers());
       } else {
-        this.toast_service.setMessage("User creation failed", "User could not be created.", ToastType.DANGER);
+        this.toast_service.setMessage("User could not be created", ToastType.DANGER);
       }
     });
   }
@@ -77,22 +76,22 @@ export class UserListComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(async (result: { user_instance: User | null, password: String }) => {
       if (result.user_instance && await this.user_service.modifyUser(result.user_instance)) {
-        this.toast_service.setMessage("User modification successful", "Selected user modified successfully.", ToastType.SUCCESS);
+        this.toast_service.setMessage("Selected user modified successfully", ToastType.SUCCESS);
 
         this.user_source = new MatTableDataSource<User>(await this.user_service.getUsers());
       } else {
-        this.toast_service.setMessage("User modification failed", "Could not modify the selected user.", ToastType.DANGER);
+        this.toast_service.setMessage("Could not modify the selected user", ToastType.DANGER);
       }
     });
   }
 
   protected async handleUserDeletion(user_id: String): Promise<void> {
     if (await this.user_service.deleteUser(user_id)) {
-      this.toast_service.setMessage("User deletion successful", "Selected user deleted successfully.", ToastType.SUCCESS);
+      this.toast_service.setMessage("Selected user deleted successfully", ToastType.SUCCESS);
 
       this.user_source = new MatTableDataSource<User>(await this.user_service.getUsers());
     } else {
-      this.toast_service.setMessage("User deletion failed", "Selected user deleted successfully.", ToastType.DANGER);
+      this.toast_service.setMessage("Selected user deleted successfully", ToastType.DANGER);
     }
   }
 }

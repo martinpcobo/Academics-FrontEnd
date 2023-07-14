@@ -1,14 +1,14 @@
 <div class="profile mat-typography mat-app-background">
   <div class="profile__header">
     <div class="profile__header__photo">
-      <img src="/assets/User-Photo.png"/>
+      <i class="bi bi-person-circle"></i>
     </div>
     <div class="profile__header__info">
       <div class="profile__header__info__name">
         <h2>{{this.user?.getName()}}</h2>
       </div>
       <div class="profile__header__info__title">
-        <span>Ing en informatica</span>
+        <span>{{this.parseUserRoles()}}</span>
       </div>
     </div>
   </div>

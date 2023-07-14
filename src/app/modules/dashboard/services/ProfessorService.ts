@@ -4,12 +4,14 @@ import {ProfessorController} from "../controllers/ProfessorController";
 import {Professor} from "../../../../models/Professor";
 import User from "../../../../models/User";
 import {Course} from "../../../../models/Course";
+import UserService from "../../../services/UserService";
 
 @Injectable()
 export default class ProfessorService {
   constructor(
     private professor_controller: ProfessorController,
-    private authentication_service: AuthenticationService
+    private authentication_service: AuthenticationService,
+    private user_service: UserService
   ) {
   }
 
@@ -42,8 +44,14 @@ export default class ProfessorService {
   public async getProfessor(professor_id: String): Promise<Professor> {
     return new Promise<Professor>((resolve, reject) => {
       this.professor_controller.getProfessor(professor_id, this.authentication_service.getToken()).subscribe({
-        next: (professor: Object) => {
-          resolve(new Professor(professor as Professor));
+        next: (professor: any) => {
+          let professor_instance: Professor = new Professor(professor as Professor);
+          professor_instance.setCourses(professor.courses.map((course_obj: Object) => {
+            return new Course(course_obj as Course);
+          }));
+
+          professor_instance.setUser(new User(professor.user as User));
+          resolve(professor_instance);
         },
         error: (error: any) => {
           resolve(error);

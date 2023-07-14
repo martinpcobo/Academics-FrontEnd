@@ -37,8 +37,9 @@ export class ProfileComponent implements OnInit {
   }
 
   // Component's Lifecycle
-  ngOnInit() {
+  async ngOnInit() {
     this.user = this.authentication_service.getUser();
+    await this.refreshAuthenticators();
 
     this.authentication_service.getUserObserver().subscribe({
       next: async (new_user: User | null) => {
@@ -58,6 +59,7 @@ export class ProfileComponent implements OnInit {
 
     if (this.user && user_id) {
       this.user_authenticators = await this.authenticator_service.getAuthenticatorsFromUser(user_id);
+      console.log(this.user_authenticators);
     }
   }
 
@@ -86,5 +88,9 @@ export class ProfileComponent implements OnInit {
         this.user_authenticators = await this.authenticator_service.getAuthenticatorsFromUser(user_id);
       }
     });
+  }
+
+  protected parseUserRoles() : String | undefined{
+    return this.user?.getRoles()?.toString().split(',').map((role) => { return role[0] + role.toLowerCase().slice(1, role.length); }).join(', ').replace('None', '');
   }
 }

@@ -13,6 +13,7 @@
       [routerLink]="['/home/courses']"
       class="menu-item"
       routerLinkActive="menu-item-active"
+      *ngIf="this.authentication_service.getUser()?.getRoles()?.includes(ERoles.STUDENT)"
     >
       <div class="menu-item__icon">
         <i class="bi bi-mortarboard"></i>
@@ -23,22 +24,10 @@
     </div>
 
     <div
-      [routerLink]="['/home/career']"
-      class="menu-item"
-      routerLinkActive="menu-item-active"
-    >
-      <div class="menu-item__icon">
-        <i class="bi bi-bar-chart"></i>
-      </div>
-      <div class="menu-item__title">
-        <p>Career</p>
-      </div>
-    </div>
-
-    <div
       [routerLink]="['/home/grades']"
       class="menu-item"
       routerLinkActive="menu-item-active"
+      *ngIf="this.authentication_service.getUser()?.getRoles()?.includes(ERoles.STUDENT)"
     >
       <div class="menu-item__icon">
         <i class="bi bi-bookmark"></i>
@@ -52,6 +41,7 @@
       [routerLink]="['/home/users']"
       class="menu-item"
       routerLinkActive="menu-item-active"
+      *ngIf="this.authentication_service.getUser()?.getRoles()?.includes(ERoles.PROFESSOR)"
     >
       <div class="menu-item__icon">
         <i class="bi bi-person-add"></i>
@@ -62,9 +52,10 @@
     </div>
 
     <div
-      [routerLink]="['/home/classes']"
+      [routerLink]="['/home/class/list']"
       class="menu-item"
       routerLinkActive="menu-item-active"
+      *ngIf="this.authentication_service.getUser()?.getRoles()?.includes(ERoles.PROFESSOR)"
     >
       <div class="menu-item__icon">
         <i class="bi bi-list-task"></i>
@@ -78,6 +69,7 @@
       [routerLink]="['/home/subjects']"
       class="menu-item"
       routerLinkActive="menu-item-active"
+      *ngIf="this.authentication_service.getUser()?.getRoles()?.includes(ERoles.PROFESSOR)"
     >
       <div class="menu-item__icon">
         <i class="bi bi-bookmarks-fill"></i>
@@ -93,14 +85,14 @@
       class="profile"
     >
       <div class="profile__photo">
-        <img src="../../../../../assets/User-Photo.png">
+        <i class="bi bi-person-circle"></i>
       </div>
       <div class="profile__info">
         <div class="profile__info__name">
           <p>{{this.user?.getName()}}</p>
         </div>
         <div class="profile__info__details">
-          <p>Student</p>
+          <p>{{this.parseUserRoles()}}</p>
         </div>
       </div>
     </div>

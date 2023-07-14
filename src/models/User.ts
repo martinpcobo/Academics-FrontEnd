@@ -6,6 +6,7 @@ export default class User {
   private verifiedEmail: String | undefined;
   private unverifiedEmail: String | undefined;
   private emailVerificationCode: String | undefined;
+  private roles: ERoles[] | undefined;
 
   constructor(user_instance?: User) {
     if (user_instance) {
@@ -16,6 +17,7 @@ export default class User {
       this.verifiedEmail = user_instance.verifiedEmail;
       this.unverifiedEmail = user_instance.unverifiedEmail;
       this.emailVerificationCode = user_instance.emailVerificationCode;
+      this.roles = user_instance.roles;
     }
   };
 
@@ -49,6 +51,10 @@ export default class User {
     return this.emailVerificationCode;
   }
 
+  public getRoles(): ERoles[] | undefined {
+    return this.roles;
+  }
+
   // * Setters
   public setIdentifier(value: String) {
     this.id = value;
@@ -78,4 +84,14 @@ export default class User {
   public setEmailVerificationCode(value: String) {
     this.emailVerificationCode = value;
   }
+
+  public setRoles(roles: ERoles[] | undefined) {
+    this.roles = roles;
+  }
+}
+
+export enum ERoles {
+  PROFESSOR= 'PROFESSOR',
+  STUDENT = 'STUDENT',
+  NONE = 'NONE'
 }

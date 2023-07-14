@@ -1,17 +1,17 @@
 import {Component, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
-import ToastService from "../../../../services/ToastService";
+import ToastService, {ToastType} from "../../../../../services/ToastService";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {Subject} from "../../../../../models/Subject";
-import {Professor} from "../../../../../models/Professor";
-import {Student} from "../../../../../models/Student";
-import {Grade} from "../../../../../models/Grade";
-import ClassService from "../../services/ClassService";
-import {Class} from "../../../../../models/Class";
-import {ToastType} from "../../../../components/toast/toast.component";
-import {ClassDialogComponent, EClassDialogMode, IClassDialogResult} from "./class-dialog/class-dialog.component";
+import {Subject} from "../../../../../../models/Subject";
+import {Professor} from "../../../../../../models/Professor";
+import {Student} from "../../../../../../models/Student";
+import {Grade} from "../../../../../../models/Grade";
+import ClassService from "../../../services/ClassService";
+import {Class} from "../../../../../../models/Class";
+import {ClassDialogComponent, EClassDialogMode, IClassDialogResult} from "../class-details/class-dialog/class-dialog.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-class-list',
@@ -22,7 +22,12 @@ export class ClassListComponent {
   protected class_source: MatTableDataSource<IClassSource> = new MatTableDataSource<IClassSource>([]);
   protected table_columns: string[] = ['subject', 'startDate', 'endDate', 'name', 'description', 'professors', 'actions'];
 
-  constructor(private class_service: ClassService, protected toast_service: ToastService, public dialog: MatDialog) {
+  constructor(
+    private class_service: ClassService,
+    protected toast_service: ToastService,
+    protected dialog: MatDialog,
+    private router: Router
+  ) {
   }
 
   // Define the paginator and sort variables using the ViewChild decorator
@@ -81,66 +86,26 @@ export class ClassListComponent {
         result.class_instance &&
         await this.class_service.createClass(result.class_instance)
       ) {
-        this.toast_service.setMessage("Class creation successful", "Class has been created.", ToastType.SUCCESS);
+        this.toast_service.setMessage("Class has been created", ToastType.SUCCESS);
         await this.refreshSource();
       } else {
-        this.toast_service.setMessage("Class creation failed", "Class could not be created.", ToastType.DANGER);
+        this.toast_service.setMessage("Class could not be created", ToastType.DANGER);
       }
     });
   }
 
   protected async handleClassDeletion(id: String): Promise<void> {
     if (await this.class_service.deleteClass(id)) {
-      this.toast_service.setMessage("Class deletion successful", "Class has been deleted.", ToastType.SUCCESS);
+      this.toast_service.setMessage("Class has been deleted", ToastType.SUCCESS);
 
       await this.refreshSource();
     } else {
-      this.toast_service.setMessage("Class deletion failed", "Class could not be deleted.", ToastType.DANGER);
+      this.toast_service.setMessage("Class could not be deleted", ToastType.DANGER);
     }
   }
 
   protected async handleClassEdition(class_instance: Class): Promise<void> {
-    console.log(class_instance);
-    const dialogRef: MatDialogRef<ClassDialogComponent> = this.dialog.open(ClassDialogComponent, {
-      data: {
-        DIALOG_MODE: EClassDialogMode.EDIT,
-        class_instance: class_instance
-      },
-      width: '50%',
-    });
-
-    dialogRef.afterClosed().subscribe(async (result: IClassDialogResult) => {
-      if (!result || !result.class_instance) return;
-
-      let professor_ids: String[] = [];
-      result.class_instance?.getProfessors()?.forEach((professor_instance: Professor) => {
-        let professor_id: String | undefined = professor_instance.getIdentifier();
-        if (professor_id) {
-          professor_ids.push(professor_id);
-        }
-      });
-
-      let students_ids: String[] = [];
-      result.class_instance?.getStudents()?.forEach((student_instance: Student) => {
-        let student_id: String | undefined = student_instance.getIdentifier();
-        if (student_id) {
-          students_ids.push(student_id);
-        }
-      });
-
-      let class_id: String | undefined = result.class_instance?.getIdentifier();
-
-      if (
-        class_id &&
-        await this.class_service.alterClassProfessors(class_id, professor_ids) &&
-        await this.class_service.alterClassStudents(class_id, students_ids)
-      ) {
-        this.toast_service.setMessage("Class modification successful", "Class has been modified.", ToastType.SUCCESS);
-        await this.refreshSource();
-      } else {
-        this.toast_service.setMessage("Class modification failed", "Class could not be modified.", ToastType.DANGER);
-      }
-    });
+    this.router.navigate(['/home/class/' + class_instance.getIdentifier()]);
   }
 }
 

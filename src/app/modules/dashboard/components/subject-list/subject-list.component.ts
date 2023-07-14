@@ -1,13 +1,12 @@
 import {Component, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
-import ToastService from "../../../../services/ToastService";
+import ToastService, {ToastType} from "../../../../services/ToastService";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {Subject} from "../../../../../models/Subject";
 import SubjectService from "../../services/SubjectService";
 import {EUserDialogMode} from "../user-list/user-dialog/user-dialog.component";
-import {ToastType} from "../../../../components/toast/toast.component";
 import {ISubjectDialogResult, SubjectDialogComponent} from "./subject-dialog/subject-dialog.component";
 
 @Component({
@@ -65,11 +64,11 @@ export class SubjectListComponent {
 
     dialogRef.afterClosed().subscribe(async (result: ISubjectDialogResult) => {
       if (result.subject_instance && await this.subject_service.createSubject(result.subject_instance)) {
-        this.toast_service.setMessage("Subject creation successful", "Subject has been created.", ToastType.SUCCESS);
+        this.toast_service.setMessage("Subject has been created", ToastType.SUCCESS);
 
         await this.refreshSource();
       } else {
-        this.toast_service.setMessage("Subject creation failed", "Subject could not be created.", ToastType.DANGER);
+        this.toast_service.setMessage("Subject could not be created", ToastType.DANGER);
       }
     });
   }
@@ -85,22 +84,22 @@ export class SubjectListComponent {
 
     dialogRef.afterClosed().subscribe(async (result: ISubjectDialogResult) => {
       if (result.subject_instance && await this.subject_service.modifySubject(result.subject_instance)) {
-        this.toast_service.setMessage("Subject successfully modified", "Selected subject has been modified.", ToastType.SUCCESS);
+        this.toast_service.setMessage("Selected subject has been modified", ToastType.SUCCESS);
 
         await this.refreshSource();
       } else {
-        this.toast_service.setMessage("Subject edition failed", "Subject could not be modified.", ToastType.DANGER);
+        this.toast_service.setMessage("Subject could not be modified", ToastType.DANGER);
       }
     });
   }
 
   protected async handleSubjectDeletion(id: String | undefined): Promise<void> {
     if (id && await this.subject_service.deleteSubject(id)) {
-      this.toast_service.setMessage("Subject successfully deleted", "Selected subject has been deleted.", ToastType.SUCCESS);
+      this.toast_service.setMessage("Selected subject has been deleted", ToastType.SUCCESS);
 
       await this.refreshSource();
     } else {
-      this.toast_service.setMessage("Subject deletion failed", "Subject could not be deleted.", ToastType.DANGER);
+      this.toast_service.setMessage("Subject could not be deleted", ToastType.DANGER);
     }
   }
 

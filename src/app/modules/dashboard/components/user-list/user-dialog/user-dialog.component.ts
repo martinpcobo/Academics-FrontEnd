@@ -5,8 +5,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import User from "../../../../../../models/User";
 import {NgIf} from "@angular/common";
-import ToastService from "../../../../../services/ToastService";
-import {ToastType} from "../../../../../components/toast/toast.component";
+import ToastService, {ToastType} from "../../../../../services/ToastService";
 import {MatIconModule} from "@angular/material/icon";
 
 @Component({
@@ -48,7 +47,7 @@ export class UserDialogComponent {
       this.user_details.controls['last_name'].value.length == 0 ||
       this.user_details.controls['email'].value.length == 0
     ) {
-      this.toast_service.setMessage("User creation failed", "Missing information for user creation", ToastType.DANGER);
+      this.toast_service.setMessage("Missing information for user creation", ToastType.DANGER);
       return;
     }
 
@@ -70,7 +69,7 @@ export class UserDialogComponent {
       this.user_details.controls['last_name'].value.length == 0 ||
       this.user_details.controls['email'].value.length == 0
     ) {
-      this.toast_service.setMessage("User creation failed", "Missing information for user creation", ToastType.DANGER);
+      this.toast_service.setMessage("Missing information for user creation", ToastType.DANGER);
       return;
     }
 

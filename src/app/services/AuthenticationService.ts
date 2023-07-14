@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import User from "../../models/User";
 import {Router} from "@angular/router";
 import {JwtHelperService} from "@auth0/angular-jwt";
-import {ToastType} from "../components/toast/toast.component";
+import {ToastType} from "./ToastService";
 import AuthenticationController, {
   WebAuthnLoginResponse
 } from "../controllers/AuthenticationController";
@@ -31,12 +31,13 @@ export default class AuthenticationService {
 
   constructor(private toast_service: ToastService, private auth_controller: AuthenticationController, private router: Router, private jwtHelper: JwtHelperService, private user_controller: UserController) {
     (async () => {
-      const token = localStorage.getItem('token');
+      const token: string | null = localStorage.getItem('token');
       if (token) {
+        this.toast_service.setMessage("Retrieving user information", ToastType.INFO);
         if (await this.retrieveUserInformation(token)) {
           this.setToken(token);
           if (this.router.url.includes('login')) {
-            await this.router.navigate(['/home']);
+            this.router.navigate(['home']);
           }
         } else {
           this.setToken(null);
@@ -88,14 +89,14 @@ export default class AuthenticationService {
     this.setToken(null);
 
     this.router.navigate(['/login']).then(() => {
-      this.toast_service.setMessage(this.component_toast_subject, 'Logged out successfully!', ToastType.SUCCESS)
+      this.toast_service.setMessage("Logged out successfully", ToastType.SUCCESS);
     });
   }
 
   public async retrieveUserInformation(token: string): Promise<boolean> {
     let user_info: User | null = await new Promise<User | null>(
       (resolve, reject) => {
-        this.user_controller.getUserInformation(this.jwtHelper.decodeToken(token).id, token).subscribe({
+        this.user_controller.getUserById(this.jwtHelper.decodeToken(token).id, token).subscribe({
           next: (res: Object) => {
             resolve(new User(res as User));
           }, error: (err: HttpErrorResponse) => {
@@ -103,7 +104,7 @@ export default class AuthenticationService {
           }
         });
       }
-    )
+    );
 
     this.setUser(user_info);
 
@@ -120,18 +121,18 @@ export default class AuthenticationService {
           if (!await this.retrieveUserInformation(res.toString())) {
             this.setToken(null);
             this.setUser(null);
-            this.toast_service.setMessage(this.component_toast_subject, "Could not retrieve the user's information", ToastType.DANGER)
+            this.toast_service.setMessage("Could not retrieve the user's information", ToastType.DANGER)
             resolve(false);
           } else {
-            this.toast_service.setMessage(this.component_toast_subject, 'Logged in successfully!', ToastType.SUCCESS);
+            this.toast_service.setMessage("Logged in successfully", ToastType.SUCCESS);
             resolve(true);
           }
         },
         error: (err: HttpErrorResponse) => {
           if (err.status === HttpStatusCode.ServiceUnavailable) {
-            this.toast_service.setMessage(this.component_toast_subject, 'Service unavailable.', ToastType.WARNING);
+            this.toast_service.setMessage("Service unavailable", ToastType.WARNING);
           } else {
-            this.toast_service.setMessage(this.component_toast_subject, 'Invalid Credentials!', ToastType.WARNING);
+            this.toast_service.setMessage("Invalid Credentials", ToastType.WARNING);
           }
           resolve(false);
         }
@@ -151,15 +152,15 @@ export default class AuthenticationService {
             this.setUser(null);
 
             this.router.navigate(['/login']).then((res) => {
-              this.toast_service.setMessage(this.component_toast_subject, 'Password changed successfully.', ToastType.SUCCESS)
+              this.toast_service.setMessage("Password changed successfully", ToastType.SUCCESS)
               resolve(true);
             });
           },
           error: (err: HttpErrorResponse) => {
             if (err.status === HttpStatusCode.ServiceUnavailable) {
-              this.toast_service.setMessage(this.component_toast_subject, 'Service unavailable.', ToastType.WARNING);
+              this.toast_service.setMessage("Service unavailable", ToastType.WARNING);
             } else {
-              this.toast_service.setMessage(this.component_toast_subject, 'Could not change password.', ToastType.WARNING);
+              this.toast_service.setMessage("Could not change password", ToastType.WARNING);
             }
             resolve(false);
           }
@@ -186,11 +187,11 @@ export default class AuthenticationService {
 
             resolve(await this.endAuthnRegistration(credentials));
           } catch (e) {
-            this.toast_service.setMessage(this.component_toast_subject, 'Could not register the new Passkey.', ToastType.DANGER);
+            this.toast_service.setMessage("Could not register the new Passkeyc", ToastType.DANGER);
           }
         },
         error: (res) => {
-          this.toast_service.setMessage(this.component_toast_subject, 'Invalid Credentials!', ToastType.WARNING);
+          this.toast_service.setMessage("Invalid Credentials", ToastType.WARNING);
         }
       });
     });
@@ -205,7 +206,7 @@ export default class AuthenticationService {
           resolve(true);
         },
         error: (res) => {
-          this.toast_service.setMessage(this.component_toast_subject, 'Invalid Credentials!', ToastType.WARNING);
+          this.toast_service.setMessage("Invalid Credentials", ToastType.WARNING);
           resolve(false);
         }
       });
@@ -221,18 +222,18 @@ export default class AuthenticationService {
             let public_key: WebAuthn.PublicKeyCredentialWithAssertionJSON = await WebAuthn.get(res);
             credentials.setPublicKey(JSON.stringify(public_key));
           } catch (e) {
-            this.toast_service.setMessage("Authentication", "Could not authenticate using Passkeys", ToastType.DANGER);
+            this.toast_service.setMessage("Could not authenticate using Passkeys", ToastType.DANGER);
           }
 
           resolve(await this.endAuthnLogin(credentials));
         },
         error: (err: HttpErrorResponse) => {
           if (err.status == HttpStatusCode.NotFound) {
-            this.toast_service.setMessage(this.component_toast_subject, "You don't have a Passkey registered!", ToastType.WARNING);
+            this.toast_service.setMessage("You don't have a Passkey registered", ToastType.WARNING);
           } else if (err.status == HttpStatusCode.ServiceUnavailable) {
-            this.toast_service.setMessage(this.component_toast_subject, "Service Unavailable.", ToastType.DANGER);
+            this.toast_service.setMessage("Service Unavailable", ToastType.DANGER);
           } else {
-            this.toast_service.setMessage(this.component_toast_subject, "Could not authenticate using Passkeys.", ToastType.DANGER);
+            this.toast_service.setMessage("Could not authenticate using Passkeys", ToastType.DANGER);
           }
           resolve(false);
         }
@@ -249,19 +250,19 @@ export default class AuthenticationService {
             if (!await this.retrieveUserInformation(token.toString())) {
               this.setToken(null);
               this.setUser(null);
-              this.toast_service.setMessage(this.component_toast_subject, "Could not retrieve the user's information.", ToastType.DANGER);
+              this.toast_service.setMessage("Could not retrieve the user's information" , ToastType.DANGER);
               resolve(false);
             } else {
               this.setToken(token);
-              this.toast_service.setMessage(this.component_toast_subject, 'Logged in successfully!', ToastType.SUCCESS);
+              this.toast_service.setMessage("Logged in successfully", ToastType.SUCCESS);
               resolve(true);
             }
           },
           error: (err: HttpErrorResponse) => {
             if (err.status == HttpStatusCode.ServiceUnavailable) {
-              this.toast_service.setMessage(this.component_toast_subject, "Service Unavailable.", ToastType.DANGER);
+              this.toast_service.setMessage("Service Unavailable", ToastType.DANGER);
             } else {
-              this.toast_service.setMessage(this.component_toast_subject, "Could not authenticate using Passkeys.", ToastType.DANGER);
+              this.toast_service.setMessage("Could not authenticate using Passkeys", ToastType.DANGER);
             }
             resolve(false);
           }

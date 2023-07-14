@@ -32,6 +32,20 @@ export default class UserService {
     });
   }
 
+  // * Get a User by Id
+  public async getUserById(user_id: String): Promise<User> {
+    return new Promise<User>((resolve, reject) => {
+      this.user_controller.getUserById(user_id, this.authentication_service.getToken()).subscribe({
+        next: (user: User) => {
+          resolve(new User(user as User));
+        },
+        error: (e) => {
+          resolve(e);
+        }
+      });
+    });
+  }
+
   // * [ADMIN] Modify existing user
   public async modifyUser(user: User): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {

@@ -4,22 +4,21 @@ import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AsyncPipe, NgFor, NgIf} from "@angular/common";
-import ToastService from "../../../../../services/ToastService";
-import {ToastType} from "../../../../../components/toast/toast.component";
+import ToastService, {ToastType} from "../../../../../../services/ToastService";
 import {MatIconModule} from "@angular/material/icon";
-import {Class} from "../../../../../../models/Class";
+import {Class} from "../../../../../../../models/Class";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatChipInputEvent, MatChipsModule} from "@angular/material/chips";
 import {MatAutocompleteModule, MatAutocompleteSelectedEvent} from "@angular/material/autocomplete";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {map, Observable, startWith} from "rxjs";
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {Professor} from "../../../../../../models/Professor";
-import ProfessorService from "../../../services/ProfessorService";
-import {Student} from "../../../../../../models/Student";
-import StudentService from "../../../services/StudentService";
-import {Subject} from "../../../../../../models/Subject";
-import SubjectService from "../../../services/SubjectService";
+import {Professor} from "../../../../../../../models/Professor";
+import ProfessorService from "../../../../services/ProfessorService";
+import {Student} from "../../../../../../../models/Student";
+import StudentService from "../../../../services/StudentService";
+import {Subject} from "../../../../../../../models/Subject";
+import SubjectService from "../../../../services/SubjectService";
 
 @Component({
   selector: 'app-user-dialog',
@@ -225,7 +224,7 @@ export class ClassDialogComponent implements OnInit {
       this.class_details.controls['description'].value.length == 0 ||
       this.selected_subject == undefined
     ) {
-      this.toast_service.setMessage("Class creation failed", "Missing information for class creation", ToastType.DANGER);
+      this.toast_service.setMessage("Missing information for class creation", ToastType.DANGER);
       return;
     }
 
@@ -252,7 +251,7 @@ export class ClassDialogComponent implements OnInit {
       this.class_details.controls['description'].value.length == 0 ||
       this.selected_subject == undefined
     ) {
-      this.toast_service.setMessage("Class creation failed", "Missing information for class creation", ToastType.DANGER);
+      this.toast_service.setMessage("Missing information for class creation", ToastType.DANGER);
       return;
     }
 

@@ -16,8 +16,6 @@ export default class AuthenticatorController {
   // * Get User's Authenticators
   public getAuthenticatorsFromUser(user_id: String, token: String): Observable<Authenticator[]> {
     return this.http.get<Authenticator[]>(this.server_url + '/api/auth/authenticator/' + user_id, {
-      responseType: "json",
-      observe: "body",
       headers: {
         'Authentication': 'Bearer ' + token
       }
