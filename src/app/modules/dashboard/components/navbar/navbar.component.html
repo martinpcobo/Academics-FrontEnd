@@ -10,7 +10,7 @@
   </div>
   <div class="navbar__menu">
     <div
-      [routerLink]="['/home/courses']"
+      [routerLink]="['/home/my-courses']"
       class="menu-item"
       routerLinkActive="menu-item-active"
       *ngIf="this.authentication_service.getUser()?.getRoles()?.includes(ERoles.STUDENT)"
@@ -24,7 +24,7 @@
     </div>
 
     <div
-      [routerLink]="['/home/grades']"
+      [routerLink]="['/home/my-grades']"
       class="menu-item"
       routerLinkActive="menu-item-active"
       *ngIf="this.authentication_service.getUser()?.getRoles()?.includes(ERoles.STUDENT)"

@@ -91,14 +91,14 @@ export default class UserService {
   }
 
   // * Create user
-  public async createUser(user: User, password: String): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
+  public async createUser(user: User, password: String): Promise<User> {
+    return new Promise<User>((resolve, reject) => {
       this.user_controller.createUser(user, password, this.authentication_service.getToken()).subscribe({
-        next: (res: String) => {
-          resolve(true);
+        next: (user_instance: Object) => {
+          resolve(new User(user_instance as User));
         },
         error: (e) => {
-          resolve(false);
+          reject(e);
         }
       });
     });

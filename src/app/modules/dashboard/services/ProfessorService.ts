@@ -17,6 +17,34 @@ export default class ProfessorService {
 
   // ! Business Logic
 
+  // * Create Professor Profile
+  public async createProfessorProfile(user_id: String): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.professor_controller.createProfessorProfile(user_id, this.authentication_service.getToken()).subscribe({
+        next: (professor: any) => {
+          resolve(true);
+        },
+        error: (error: any) => {
+          resolve(false);
+        },
+      });
+    })
+  }
+
+  // * Delete Professor Profile
+  public async deleteProfessorProfile(professor_id: String): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.professor_controller.deleteProfessorProfile(professor_id, this.authentication_service.getToken()).subscribe({
+        next: (professor: any) => {
+          resolve(true);
+        },
+        error: (error: any) => {
+          resolve(false);
+        },
+      });
+    })
+  }
+
   // * Get all Professors
   public async getAllProfessors(): Promise<Professor[]> {
     return new Promise<Professor[]>((resolve, reject) => {

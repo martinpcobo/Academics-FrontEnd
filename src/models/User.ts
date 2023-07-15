@@ -6,7 +6,7 @@ export default class User {
   private verifiedEmail: String | undefined;
   private unverifiedEmail: String | undefined;
   private emailVerificationCode: String | undefined;
-  private roles: ERoles[] | undefined;
+  private roles: EUserRoles[] | undefined;
 
   constructor(user_instance?: User) {
     if (user_instance) {
@@ -51,7 +51,7 @@ export default class User {
     return this.emailVerificationCode;
   }
 
-  public getRoles(): ERoles[] | undefined {
+  public getRoles(): EUserRoles[] | undefined {
     return this.roles;
   }
 
@@ -85,13 +85,13 @@ export default class User {
     this.emailVerificationCode = value;
   }
 
-  public setRoles(roles: ERoles[] | undefined) {
+  public setRoles(roles: EUserRoles[] | undefined) {
     this.roles = roles;
   }
 }
 
-export enum ERoles {
-  PROFESSOR= 'PROFESSOR',
+export enum EUserRoles {
+  PROFESSOR = 'PROFESSOR',
   STUDENT = 'STUDENT',
   NONE = 'NONE'
 }

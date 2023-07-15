@@ -14,6 +14,25 @@ export class ProfessorController {
 
   // ! Endpoints
 
+  // * Create Professor Profile
+  public createProfessorProfile(user_id: String, token: String | null): Observable<Professor> {
+    return this.http.post<Professor>(this.server_url + '/api/professor/' + user_id, {}, {
+      headers: {
+        'Authentication': 'Bearer ' + token,
+      }
+    });
+  }
+
+  // * Delete Professor Profile
+  public deleteProfessorProfile(professor_id: String, token: String | null): Observable<String> {
+    return this.http.delete(this.server_url + '/api/professor/' + professor_id, {
+      headers: {
+        'Authentication': 'Bearer ' + token,
+      },
+      responseType: 'text'
+    });
+  }
+
   // * Get all Professors
   public getAllProfessors(token: String | null): Observable<Professor[]> {
     return this.http.get<Professor[]>(this.server_url + '/api/professor/', {

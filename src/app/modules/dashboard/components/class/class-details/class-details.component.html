@@ -5,7 +5,7 @@
     </div>
     <div class="class_details__header__details">
       <div class="class_details__header__details__ind">
-          <span style="font-style: italic">{{this.class_instance?.getSubject()?.getName()}}</span>
+        <span style="font-style: italic">{{this.class_instance?.getSubject()?.getName()}}</span>
       </div>
     </div>
   </div>
@@ -83,7 +83,8 @@
       </mat-tab>
       <mat-tab label="Grades">
         <div>
-          <button mat-button (click)="this.handleGradeCreation()" [disabled]="!this.class_instance">Record new Grade</button>
+          <button mat-button (click)="this.handleGradeCreation()" [disabled]="!this.class_instance">Record new Grade
+          </button>
         </div>
         <div class="list_container mat-app-background">
           <div class="list_container__body">
@@ -110,7 +111,7 @@
 
                 <!-- Actions Column -->
                 <ng-container matColumnDef="actions">
-                  <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Email</strong></th>
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header><strong></strong></th>
                   <td mat-cell *matCellDef="let row">
                     <button mat-button (click)="this.handleGradeDeletion(row.grade_instance)">Delete</button>
                   </td>

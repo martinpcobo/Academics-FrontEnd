@@ -10,7 +10,7 @@ import {UserListComponent} from "./components/user-list/user-list.component";
 import {MatInputModule} from "@angular/material/input";
 import {MatTableModule} from "@angular/material/table";
 import {MatSortModule} from "@angular/material/sort";
-import {CoursesComponent} from "./components/courses/courses.component";
+import {CoursesComponent} from "./components/my-courses/courses.component";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {ClassListComponent} from "./components/class/class-list/class-list.component";
 import {SubjectListComponent} from "./components/subject-list/subject-list.component";
@@ -26,7 +26,7 @@ import StudentService from "./services/StudentService";
 import {StudentController} from "./controllers/StudentController";
 import GradeService from "./services/GradeService";
 import {GradeController} from "./controllers/GradeController";
-import {GradesComponent} from "./components/grades/grades.component";
+import {GradesComponent} from "./components/my-grades/grades.component";
 import {ClassComponent} from "./components/class/class.component";
 
 

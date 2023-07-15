@@ -23,7 +23,7 @@ export default class ClassService {
 
   // ! Business Logic
 
-  // * Get all classes
+  // * Get all my-courses
   public async getAllClasses(): Promise<Class[]> {
     return new Promise<Class[]>((resolve, reject) => {
       this.class_controller.getAllClasses(this.authentication_service.getToken()).subscribe({
@@ -95,6 +95,40 @@ export default class ClassService {
           reject(error);
         }
       })
+    });
+  }
+
+  // * Get all Classes from Student
+  public async getClassesFromStudent(student_id: String): Promise<Class[]> {
+    return new Promise<Class[]>((resolve, reject) => {
+      this.class_controller.getClassesFromStudent(student_id, this.authentication_service.getToken()).subscribe({
+        next: async (classes: any[]) => {
+          let classes_list: Class[] = [];
+
+          for (const class_obj of classes) {
+            let class_ind: Class = new Class(class_obj as Class);
+            class_ind.setSubject(new Subject(class_obj.subject as Subject));
+
+            let professors: Professor[] = [];
+            for (const professor_id of class_obj.professors) {
+              let professor: Professor = await this.professor_service.getProfessor(professor_id);
+              professor.setUser(new User(professor.getUser() as User))
+              professors.push(professor);
+            }
+
+            class_ind.setProfessors(professors);
+            class_ind.setStudents([]);
+            class_ind.setGrades([]);
+
+            classes_list.push(class_ind);
+          }
+
+          resolve(classes_list);
+        },
+        error: (error: any) => {
+          resolve([])
+        },
+      });
     });
   }
 

@@ -14,6 +14,25 @@ export class StudentController {
 
   // ! Endpoints
 
+  // * Create Student Profile
+  public createStudentProfile(user_id: String, token: String | null): Observable<Student> {
+    return this.http.post<Student>(this.server_url + '/api/student/' + user_id, {}, {
+      headers: {
+        'Authentication': 'Bearer ' + token,
+      }
+    });
+  }
+
+  // * Delete Student Profile
+  public deleteStudentProfile(user_id: String, token: String | null): Observable<String> {
+    return this.http.delete(this.server_url + '/api/student/' + user_id, {
+      headers: {
+        'Authentication': 'Bearer ' + token,
+      },
+      responseType: 'text',
+    });
+  }
+
   // * Get all Students
   public getAllStudents(token: String | null): Observable<Student[]> {
     return this.http.get<Student[]>(this.server_url + '/api/student/', {

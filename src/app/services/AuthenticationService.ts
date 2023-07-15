@@ -2,15 +2,12 @@ import {Injectable} from "@angular/core";
 import User from "../../models/User";
 import {Router} from "@angular/router";
 import {JwtHelperService} from "@auth0/angular-jwt";
-import {ToastType} from "./ToastService";
-import AuthenticationController, {
-  WebAuthnLoginResponse
-} from "../controllers/AuthenticationController";
+import ToastService, {ToastType} from "./ToastService";
+import AuthenticationController, {WebAuthnLoginResponse} from "../controllers/AuthenticationController";
 import AuthLoginDetails from "../../models/dtos/AuthLoginDetails";
 import * as WebAuthn from "@github/webauthn-json";
 import {CredentialCreationOptionsJSON, PublicKeyCredentialWithAttestationJSON} from "@github/webauthn-json";
 import {HttpErrorResponse, HttpStatusCode} from "@angular/common/http";
-import ToastService from "./ToastService";
 import UserController from "../controllers/UserController";
 import {Observable, Subject} from "rxjs";
 
@@ -30,21 +27,7 @@ export default class AuthenticationService {
   private tokenObserver: Observable<String | null> = this.token_subj.asObservable();
 
   constructor(private toast_service: ToastService, private auth_controller: AuthenticationController, private router: Router, private jwtHelper: JwtHelperService, private user_controller: UserController) {
-    (async () => {
-      const token: string | null = localStorage.getItem('token');
-      if (token) {
-        this.toast_service.setMessage("Retrieving user information", ToastType.INFO);
-        if (await this.retrieveUserInformation(token)) {
-          this.setToken(token);
-          if (this.router.url.includes('login')) {
-            this.router.navigate(['home']);
-          }
-        } else {
-          this.setToken(null);
-          localStorage.removeItem('token');
-        }
-      }
-    })();
+    this.retrieveToken();
   }
 
   // ! Methods
@@ -84,6 +67,25 @@ export default class AuthenticationService {
   // ! Business Logic
 
   // * Auth-Type Agnostic Methods
+
+  public async retrieveToken(): Promise<boolean> {
+    const token: string | null = localStorage.getItem('token');
+    if (token) {
+      this.toast_service.setMessage("Retrieving user information", ToastType.INFO);
+      if (await this.retrieveUserInformation(token)) {
+        this.setToken(token);
+        if (this.router.url.includes('login')) {
+          this.router.navigate(['home']);
+        }
+      } else {
+        this.setToken(null);
+        localStorage.removeItem('token');
+      }
+    }
+
+    return this.getToken() != null;
+  }
+
   public logout(): void {
     this.setUser(null);
     this.setToken(null);
@@ -250,7 +252,7 @@ export default class AuthenticationService {
             if (!await this.retrieveUserInformation(token.toString())) {
               this.setToken(null);
               this.setUser(null);
-              this.toast_service.setMessage("Could not retrieve the user's information" , ToastType.DANGER);
+              this.toast_service.setMessage("Could not retrieve the user's information", ToastType.DANGER);
               resolve(false);
             } else {
               this.setToken(token);

@@ -64,8 +64,8 @@ export default class UserController {
   }
 
   // * Create user
-  public createUser(user: User, password: String, token: String | null): Observable<String> {
-    return this.http.post(this.server_url + '/api/user/', {
+  public createUser(user: User, password: String, token: String | null): Observable<User> {
+    return this.http.post<User>(this.server_url + '/api/user/', {
       ...user,
       credential: {
         password: password
@@ -73,8 +73,7 @@ export default class UserController {
     }, {
       headers: {
         'Authentication': 'Bearer ' + token,
-      },
-      responseType: 'text'
+      }
     });
   }
 }

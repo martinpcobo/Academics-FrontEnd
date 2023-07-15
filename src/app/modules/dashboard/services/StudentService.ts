@@ -15,6 +15,36 @@ export default class StudentService {
 
   // ! Business Logic
 
+  // * Create Student Profile
+  public async createStudentProfile(user_id: String): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.student_controller.createStudentProfile(user_id, this.authentication_service.getToken()).subscribe({
+        next: (student: any) => {
+          console.log(student);
+          resolve(true);
+        },
+        error: (error: any) => {
+          console.log(error);
+          resolve(false);
+        },
+      });
+    })
+  }
+
+  // * Delete Student Profile
+  public async deleteStudentProfile(user_id: String): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.student_controller.deleteStudentProfile(user_id, this.authentication_service.getToken()).subscribe({
+        next: (student: any) => {
+          resolve(true);
+        },
+        error: (error: any) => {
+          resolve(false);
+        },
+      });
+    })
+  }
+
   // * Get all Students
   public async getAllStudents(): Promise<Student[]> {
     return new Promise<Student[]>((resolve, reject) => {

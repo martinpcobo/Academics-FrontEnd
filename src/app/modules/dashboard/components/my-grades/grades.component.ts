@@ -11,7 +11,7 @@ import GradeService from "../../services/GradeService";
 import AuthenticationService from "../../../../services/AuthenticationService";
 
 @Component({
-  selector: 'app-grades',
+  selector: 'app-my-grades',
   templateUrl: './grades.component.html',
   styleUrls: ['./grades.component.scss']
 })
@@ -35,12 +35,12 @@ export class GradesComponent {
   async ngOnInit() {
     this.authentication_service.getUserObserver().subscribe(async (user: User | null) => {
       let student_id: String | undefined = user?.getIdentifier();
-      if(student_id) {
+      if (student_id) {
         await this.refreshGradeSource(student_id);
       }
     })
     let student_id: String | undefined = this.authentication_service.getUser()?.getIdentifier();
-    if(student_id) {
+    if (student_id) {
       await this.refreshGradeSource(student_id);
     }
   }

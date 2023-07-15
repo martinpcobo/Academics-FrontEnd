@@ -33,6 +33,15 @@ export class ClassController {
     });
   }
 
+  // * Get Clases from Student
+  public getClassesFromStudent(student_id: String, token: String | null): Observable<Class[]> {
+    return this.http.get<Class[]>(this.server_url + '/api/class/student/' + student_id, {
+      headers: {
+        'Authentication': 'Bearer ' + token
+      }
+    });
+  }
+
   // * Create a Class
   public createClass(class_instance: Class, token: String | null): Observable<Class> {
     return this.http.post<Class>(this.server_url + '/api/class/', class_instance, {
