@@ -1,0 +1,57 @@
+<div>
+  <div mat-dialog-content>
+    <mat-label *ngIf="this.data.DIALOG_MODE == EUserDialogMode.CREATE">New user creation</mat-label>
+    <mat-label *ngIf="this.data.DIALOG_MODE == EUserDialogMode.EDIT">Edit existing user</mat-label>
+
+    <form [formGroup]="this.user_details" class="d-flex flex-column">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Martin" formControlName="first_name" required>
+        <mat-error
+          *ngIf="this.user_details.get('first_name')?.invalid">Invalid name
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Last Name</mat-label>
+        <input matInput placeholder="Perez Cobo Garcia" formControlName="last_name" required>
+        <mat-error
+          *ngIf="this.user_details.get('last_name')?.invalid">Invalid last name
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="example@ucema.edu.ar" formControlName="email" required>
+        <mat-error
+          *ngIf="this.user_details.get('email')?.invalid">Invalid email
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="this.data.DIALOG_MODE == this.EUserDialogMode.CREATE">
+        <mat-label>Password</mat-label>
+        <input matInput [value]="this.user_details.get('password')?.value"
+               [type]="this.hide_sensitive_data ? 'password' : 'text'" formControlName="password" readonly>
+        <button mat-icon-button matSuffix (click)="this.hide_sensitive_data = !this.hide_sensitive_data"
+                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="this.hide_sensitive_data">
+          <mat-icon>{{this.hide_sensitive_data ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-checkbox formControlName="is_student">Student</mat-checkbox>
+      <mat-checkbox formControlName="is_professor">Professor</mat-checkbox>
+    </form>
+  </div>
+  <div mat-dialog-actions class="d-flex flex-row justify-content-end">
+    <button mat-button (click)="this.cancelResponse()">Cancel</button>
+    <button *ngIf="this.data.DIALOG_MODE == EUserDialogMode.CREATE" [disabled]="this.user_details.invalid" mat-button
+            color="primary"
+            (click)="this.submitUserCreation()">Create
+    </button>
+    <button *ngIf="this.data.DIALOG_MODE == EUserDialogMode.EDIT" [disabled]="this.user_details.invalid" mat-button
+            color="primary"
+            (click)="this.submitUserEdit()">Submit
+    </button>
+  </div>
+
+</div>

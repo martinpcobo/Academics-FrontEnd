@@ -1,0 +1,148 @@
+<div class="profile mat-typography mat-app-background">
+  <div class="profile__header">
+    <div class="profile__header__photo">
+      <i class="bi bi-person-circle"></i>
+    </div>
+    <div class="profile__header__info">
+      <div class="profile__header__info__name">
+        <h2>{{this.user?.getName()}}</h2>
+      </div>
+      <div class="profile__header__info__title">
+        <span>{{this.parseUserRoles()}}</span>
+      </div>
+    </div>
+  </div>
+  <!--
+  <div class="profile__summary">
+    <div class="profile__summary__title">
+      <h3></h3>
+    </div>
+    <div class="profile__summary__content">
+      <span></span>
+    </div>
+  </div>
+  -->
+  <div class="profile__body">
+    <!-- ! Personal Information -->
+    <div class="profile__body__content">
+      <div class="profile__body__content__info">
+        <div class="profile__body__content__info__title">
+          <p>Datos Personales</p>
+        </div>
+        <div class="profile__body__content__info__description">
+          <span>Representa la información personal con la que la UCEMA cuenta sobre usted.</span>
+        </div>
+      </div>
+      <div class="profile__body__content__body">
+        <div class="row w-100">
+          <div class="col-6">
+            <label>Nombre</label>
+            <input type="text" id="name"
+                   class="form-control"
+                   value="{{this.user?.getFirstName()}}"
+                   disabled
+                   readonly
+            >
+          </div>
+        </div>
+        <div class="row w-100">
+          <div class="col-6">
+
+            <label>Apellido</label>
+            <input type="text" id="last_name"
+                   class="form-control"
+                   value="{{this.user?.getLastName()}}"
+                   readonly
+                   disabled
+            >
+          </div>
+        </div>
+        <div class="row w-100">
+          <div class="col-6">
+            <label>Email</label>
+            <input type="text" id="edu_email"
+                   class="form-control w-100"
+                   value="{{this.user?.getVerifiedEmail()}}"
+                   readonly
+                   disabled
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ! Password Change -->
+    <div class="profile__body__content">
+      <div class="profile__body__content__info">
+        <div class="profile__body__content__info__title">
+          <p>Contraseña</p>
+        </div>
+        <div class="profile__body__content__info__description">
+          <span>Se recomienda que la contraseña sea unica y cambiada cada una determinada cantidad de tiempo.</span>
+        </div>
+      </div>
+      <div class="profile__body__content__body">
+        <div class="row w-100">
+          <div class="col-6" [formGroup]="change_password">
+            <label for="old_password" class="col-form-label">Old Password</label>
+            <input type="password" id="old_password" formControlName="old_password"
+                   class="form-control"
+                   aria-labelledby="passwordHelpInline">
+
+            <label for="new_password" class="col-form-label">New Password</label>
+            <input type="password" id="new_password" formControlName="new_password"
+                   class="form-control"
+                   aria-labelledby="passwordHelpInline">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <button (click)="submitChangePassword()" [disabled]="change_password.invalid" color="primary"
+                    mat-flat-button
+                    type="button">Change Password
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ! Passkeys Authenticators -->
+    <div class="profile__body__content">
+      <div class="profile__body__content__info">
+        <div class="profile__body__content__info__title">
+          <p>Passkeys</p>
+        </div>
+        <div class="profile__body__content__info__description">
+          <span>Es altamente recomendable crear una Passkey para facilitar el inicio de sesión a la plataforma.</span>
+        </div>
+      </div>
+      <div class="profile__body__content__body">
+
+        <!-- No Authenticators Message -->
+        <div class="row w-100" *ngIf="this.user_authenticators.length == 0">
+          <div class="col-12">
+            <span>Todavia no registraste ninguna Passkey.</span>
+          </div>
+        </div>
+
+        <!-- Authenticators List -->
+        <div class="row w-100" *ngIf="this.user_authenticators.length != 0">
+          <div class="col-4" *ngFor="let authenticator of this.user_authenticators">
+            <app-authenticator [authenticator]="authenticator"
+                               (refreshAuthenticators)="refreshAuthenticators()"></app-authenticator>
+          </div>
+        </div>
+
+        <!-- Set up more authenticators -->
+        <div class="row" *ngIf="this.user_authenticators.length < 2">
+          <div class="col-12">
+            <button (click)="this.startAuthenticatorRegistration()" color="primary"
+                    mat-flat-button
+                    type="button">Register new Passkey
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

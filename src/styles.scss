@@ -1,0 +1,42 @@
+@import "theme.scss";
+
+html, body {
+  height: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+
+.snackbar-danger {
+  --mdc-snackbar-supporting-text-color: #DC3545FF;
+  --mdc-snackbar-supporting-text-weight: 600;
+}
+
+.snackbar-info {
+  //--mdc-snackbar-supporting-text-color: black;
+}
+
+.snackbar-success {
+  --mdc-snackbar-supporting-text-color: #198754FF;
+}
+
+.snackbar-warning {
+  --mdc-snackbar-supporting-text-color: #FFC107FF;
+}

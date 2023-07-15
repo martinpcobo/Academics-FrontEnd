@@ -1,0 +1,131 @@
+<div class="class_details  mat-app-background">
+  <div class="class_details__header">
+    <div class="class_details__header__title">
+      <h2>{{this.class_instance?.getName()}}</h2>
+    </div>
+    <div class="class_details__header__details">
+      <div class="class_details__header__details__ind">
+        <span style="font-style: italic">{{this.class_instance?.getSubject()?.getName()}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="class_details__actions">
+    <button mat-flat-button color="primary" (click)="this.router.navigate(['home/class/list'])">Back</button>
+    <button mat-flat-button (click)="this.handleClassEdit()" [disabled]="!this.class_instance">Edit</button>
+  </div>
+
+  <div class="class_details__body">
+    <mat-tab-group>
+      <mat-tab label="Professors">
+        <div class="list_container mat-app-background">
+          <div class="list_container__body">
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="this.professor_source" matSort>
+                <!-- First Name Column -->
+                <ng-container matColumnDef="first_name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>First Name</strong></th>
+                  <td mat-cell *matCellDef="let row"> {{row.first_name}} </td>
+                </ng-container>
+
+                <!-- Last Name Column -->
+                <ng-container matColumnDef="last_name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Last Name</strong></th>
+                  <td mat-cell *matCellDef="let row"> {{row.last_name}}</td>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Email</strong></th>
+                  <td mat-cell *matCellDef="let row"> {{row.email}}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="this.professor_columns"></tr>
+                <tr mat-row *matRowDef="let row; columns: this.professor_columns;"></tr>
+              </table>
+
+              <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of professors"></mat-paginator>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+
+      <mat-tab label="Students">
+        <div class="list_container mat-app-background">
+          <div class="list_container__body">
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="this.student_source" matSort>
+                <!-- First Name Column -->
+                <ng-container matColumnDef="first_name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>First Name</strong></th>
+                  <td mat-cell *matCellDef="let row"> {{row.first_name}} </td>
+                </ng-container>
+
+                <!-- Last Name Column -->
+                <ng-container matColumnDef="last_name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Last Name</strong></th>
+                  <td mat-cell *matCellDef="let row"> {{row.last_name}}</td>
+                </ng-container>
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Email</strong></th>
+                  <td mat-cell *matCellDef="let row"> {{row.email}}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="this.student_columns"></tr>
+                <tr mat-row *matRowDef="let row; columns: this.student_columns;"></tr>
+              </table>
+
+              <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of students"></mat-paginator>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Grades">
+        <div>
+          <button mat-button (click)="this.handleGradeCreation()" [disabled]="!this.class_instance">Record new Grade
+          </button>
+        </div>
+        <div class="list_container mat-app-background">
+          <div class="list_container__body">
+            <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="this.grades_source" matSort>
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Name</strong></th>
+                  <td mat-cell *matCellDef="let row"> {{row.name}}</td>
+                </ng-container>
+
+                <!-- Grade Column -->
+                <ng-container matColumnDef="grade">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Grade</strong></th>
+                  <td mat-cell *matCellDef="let row"> {{row.grade}} </td>
+                </ng-container>
+
+
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Email</strong></th>
+                  <td mat-cell *matCellDef="let row"> {{row.email}}</td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header><strong></strong></th>
+                  <td mat-cell *matCellDef="let row">
+                    <button mat-button (click)="this.handleGradeDeletion(row.grade_instance)">Delete</button>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="this.grades_columns"></tr>
+                <tr mat-row *matRowDef="let row; columns: this.grades_columns;"></tr>
+              </table>
+
+              <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of grades"></mat-paginator>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

@@ -1,0 +1,135 @@
+<aside class="navbar navbar-collapsed {{this.theme_service.getThemeCSSClass()}}" navbarCollapseDirective>
+  <div class="navbar__header">
+    <div class="navbar__header__logo">
+      <img
+        (click)="this.router.navigate(['/home'])"
+        alt="UCEMA Small Logo"
+        src="../../../../../assets/ucema-small-icon.svg"
+      >
+    </div>
+  </div>
+  <div class="navbar__menu">
+    <div
+      [routerLink]="['/home/my-courses']"
+      class="menu-item"
+      routerLinkActive="menu-item-active"
+      *ngIf="this.authentication_service.getUser()?.getRoles()?.includes(ERoles.STUDENT)"
+    >
+      <div class="menu-item__icon">
+        <i class="bi bi-mortarboard"></i>
+      </div>
+      <div class="menu-item__title">
+        <p>Courses</p>
+      </div>
+    </div>
+
+    <div
+      [routerLink]="['/home/my-grades']"
+      class="menu-item"
+      routerLinkActive="menu-item-active"
+      *ngIf="this.authentication_service.getUser()?.getRoles()?.includes(ERoles.STUDENT)"
+    >
+      <div class="menu-item__icon">
+        <i class="bi bi-bookmark"></i>
+      </div>
+      <div class="menu-item__title">
+        <p>Grades</p>
+      </div>
+    </div>
+
+    <div
+      [routerLink]="['/home/users']"
+      class="menu-item"
+      routerLinkActive="menu-item-active"
+      *ngIf="this.authentication_service.getUser()?.getRoles()?.includes(ERoles.PROFESSOR)"
+    >
+      <div class="menu-item__icon">
+        <i class="bi bi-person-add"></i>
+      </div>
+      <div class="menu-item__title">
+        <p>Users</p>
+      </div>
+    </div>
+
+    <div
+      [routerLink]="['/home/class/list']"
+      class="menu-item"
+      routerLinkActive="menu-item-active"
+      *ngIf="this.authentication_service.getUser()?.getRoles()?.includes(ERoles.PROFESSOR)"
+    >
+      <div class="menu-item__icon">
+        <i class="bi bi-list-task"></i>
+      </div>
+      <div class="menu-item__title">
+        <p>Classes</p>
+      </div>
+    </div>
+
+    <div
+      [routerLink]="['/home/subjects']"
+      class="menu-item"
+      routerLinkActive="menu-item-active"
+      *ngIf="this.authentication_service.getUser()?.getRoles()?.includes(ERoles.PROFESSOR)"
+    >
+      <div class="menu-item__icon">
+        <i class="bi bi-bookmarks-fill"></i>
+      </div>
+      <div class="menu-item__title">
+        <p>Subjects</p>
+      </div>
+    </div>
+  </div>
+  <div class="navbar__config">
+    <div
+      [matMenuTriggerFor]="menu"
+      class="profile"
+    >
+      <div class="profile__photo">
+        <i class="bi bi-person-circle"></i>
+      </div>
+      <div class="profile__info">
+        <div class="profile__info__name">
+          <p>{{this.user?.getName()}}</p>
+        </div>
+        <div class="profile__info__details">
+          <p>{{this.parseUserRoles()}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+
+<mat-menu #menu="matMenu">
+  <div class="options_menu">
+    <button [routerLink]="['/home/profile']" mat-menu-item>
+      <mat-icon>
+        <i class="bi bi-person-circle"></i>
+      </mat-icon>
+      <span>Profile</span>
+    </button>
+
+    <button mat-menu-item (click)="theme_service.setTheme(EThemeOptions.DARK_THEME)"
+            *ngIf="this.theme_service.getTheme() == EThemeOptions.LIGHT_THEME">
+      <mat-icon>
+        <i class="bi bi-moon-fill"></i>
+      </mat-icon>
+      <span>Dark Mode</span>
+    </button>
+
+    <button mat-menu-item (click)="theme_service.setTheme(EThemeOptions.LIGHT_THEME)"
+            *ngIf="this.theme_service.getTheme() == EThemeOptions.DARK_THEME">
+      <mat-icon>
+        <i class="bi bi-sun-fill"></i>
+      </mat-icon>
+      <span>Light Mode</span>
+    </button>
+
+    <button (click)="this.authentication_service.logout()" mat-menu-item>
+      <mat-icon>
+        <i class="bi bi-door-open"></i>
+      </mat-icon>
+      <span>Logout</span>
+    </button>
+  </div>
+</mat-menu>

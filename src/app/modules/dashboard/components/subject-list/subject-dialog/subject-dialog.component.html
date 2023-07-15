@@ -1,0 +1,30 @@
+<div>
+  <div mat-dialog-content>
+    <mat-label *ngIf="this.data.DIALOG_MODE == ESubjectDialogModes.CREATE">New subject creation</mat-label>
+    <mat-label *ngIf="this.data.DIALOG_MODE == ESubjectDialogModes.EDIT">Edit existing subject</mat-label>
+
+    <form [formGroup]="this.subject_details" class="d-flex flex-column">
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Programación III" formControlName="name" required>
+        <mat-error
+          *ngIf="this.subject_details.get('name')?.invalid">Invalid name
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+  <div mat-dialog-actions class="d-flex flex-row justify-content-end">
+    <button mat-button (click)="this.cancelResponse()">Cancel</button>
+    <button *ngIf="this.data.DIALOG_MODE == ESubjectDialogModes.CREATE" [disabled]="this.subject_details.invalid"
+            mat-button
+            color="primary"
+            (click)="this.submitSubjectCreation()">Create
+    </button>
+    <button *ngIf="this.data.DIALOG_MODE == ESubjectDialogModes.EDIT" [disabled]="this.subject_details.invalid"
+            mat-button
+            color="primary"
+            (click)="this.submitUserEdit()">Submit
+    </button>
+  </div>
+
+</div>

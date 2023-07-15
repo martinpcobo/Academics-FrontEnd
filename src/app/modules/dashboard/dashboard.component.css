@@ -1,0 +1,9 @@
+.component {
+  height: 100vh;
+
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: max-content 1fr;
+
+  column-gap: 0rem;
+}

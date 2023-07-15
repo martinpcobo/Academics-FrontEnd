@@ -1,0 +1,52 @@
+<div>
+  <div mat-dialog-content>
+    <mat-label *ngIf="this.data.DIALOG_MODE == ECGradeDialogMode.CREATE">New class creation</mat-label>
+    <mat-label *ngIf="this.data.DIALOG_MODE == ECGradeDialogMode.EDIT">Existing class edition</mat-label>
+
+    <form [formGroup]="this.grade_details" class="d-flex flex-column">
+      <!-- Student -->
+      <mat-form-field>
+        <mat-label>Student</mat-label>
+        <input
+          [matAutocomplete]="studentAutocomplete"
+          aria-label="Student"
+          formControlName="student"
+          matInput
+          placeholder="Start typing..."
+          type="text"
+        >
+        <mat-autocomplete autoActiveFirstOption #studentAutocomplete="matAutocomplete">
+          <mat-option
+            *ngFor="let student of this.filtered_students | async"
+            [value]="student.getUser()?.getName()"
+            (click)="this.selected_student = student;"
+          >
+            {{student.getUser()?.getName()}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <!-- Value -->
+      <mat-form-field>
+        <mat-label>Value</mat-label>
+        <input matInput formControlName="value" required>
+        <mat-error
+          *ngIf="this.grade_details.get('value')?.invalid">Invalid grade
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </div>
+  <div mat-dialog-actions class="d-flex flex-row justify-content-end">
+    <button mat-button (click)="this.cancelResponse()">Cancel</button>
+    <button *ngIf="this.data.DIALOG_MODE == ECGradeDialogMode.CREATE" [disabled]="this.grade_details.invalid"
+            mat-button
+            color="primary"
+            (click)="this.submitGradeCreation()">Create
+    </button>
+    <button *ngIf="this.data.DIALOG_MODE == ECGradeDialogMode.EDIT" [disabled]="this.grade_details.invalid"
+            mat-button
+            color="primary"
+            (click)="this.submitGradeEdit()">Submit
+    </button>
+  </div>
+</div>

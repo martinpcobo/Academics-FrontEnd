@@ -1,0 +1,32 @@
+<div class="list_container mat-app-background">
+  <div class="list_container__header">
+    <div class="list_container__header__filter">
+      <mat-form-field class="w-100">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" #input>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="list_container__body">
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="this.grade_source" matSort>
+        <!-- Subject Column -->
+        <ng-container matColumnDef="subject">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Subject</strong></th>
+          <td mat-cell *matCellDef="let row"> {{row.subject}} </td>
+        </ng-container>
+
+        <!-- Grade Column -->
+        <ng-container matColumnDef="grade">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Grade</strong></th>
+          <td mat-cell *matCellDef="let row"> {{row.grade}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="this.table_columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: this.table_columns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+  </div>
+</div>

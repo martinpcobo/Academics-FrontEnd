@@ -1,0 +1,85 @@
+<div class="class_container mat-app-background">
+  <div class="class_container__header">
+    <div class="class_container__header__filter">
+      <mat-form-field class="w-100">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" #input>
+      </mat-form-field>
+    </div>
+    <div class="class_container__header__actions">
+      <button mat-button (click)="this.handleClassCreation()">
+        <mat-icon>add</mat-icon>
+        <span>Create new class</span>
+      </button>
+    </div>
+  </div>
+  <div class="class_container__body">
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="this.class_source" matSort>
+        <!--  Column -->
+        <ng-container matColumnDef="subject">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Subject</strong></th>
+          <td mat-cell *matCellDef="let row"> {{row.subject.getName()}} </td>
+        </ng-container>
+
+        <!-- Start Date Column -->
+        <ng-container matColumnDef="startDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Start Date</strong></th>
+          <td mat-cell *matCellDef="let row"> {{row.startDate}}</td>
+        </ng-container>
+
+        <!-- End Date Column -->
+        <ng-container matColumnDef="endDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>End Date</strong></th>
+          <td mat-cell *matCellDef="let row"> {{row.endDate}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Name</strong></th>
+          <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+        </ng-container>
+
+        <!-- Description Column -->
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Description</strong></th>
+          <td mat-cell *matCellDef="let row"> {{row.description}} </td>
+        </ng-container>
+
+        <!-- Professors Column -->
+        <ng-container matColumnDef="professors">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header><strong>Professors</strong></th>
+          <td mat-cell *matCellDef="let row">
+            <span *ngFor="let professor_instance of row.professors">
+              {{professor_instance?.getUser()?.getName()}}
+
+              <span
+                *ngIf="row.professors.length > 1 && row.professors[row.professors.length - 1] != professor_instance">,</span>
+            </span>
+            {{row.professors.length == 0 ? 'No Professor' : ''}}
+          </td>
+        </ng-container>
+
+        <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <button mat-button (click)="this.handleClassDeletion(row.id)">
+              <mat-icon>delete</mat-icon>
+              <span>Delete</span>
+            </button>
+            <button mat-button (click)="this.handleClassEdition(row.class_instance)">
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="this.table_columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: this.table_columns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+    </div>
+  </div>
+</div>

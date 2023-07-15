@@ -1,0 +1,72 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+//mat.$theme-ignore-duplication-warnings: true;
+
+// ! Custom Palette
+$academics-primary-palette: (
+  50: #f8e8ed,
+  100: #efc6d1,
+  200: #d88f9a,
+  300: #c66474,
+  400: #ce4058,
+  500: #d12642,
+  600: #c21e40,
+  700: #b11539,
+  800: #a30d32,
+  900: #940027,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: white,
+  )
+);
+
+// ! Define colors
+
+// * Light Colors
+$Academics-light-primary: mat.define-palette($academics-primary-palette, 700, 500, 900);
+$Academics-light-accent: mat.define-palette(mat.$blue-gray-palette, 500, 100, 800);
+$Academics-light-warn: mat.define-palette(mat.$red-palette);
+// * Dark Colors
+$Academics-dark-primary: mat.define-palette($academics-primary-palette);
+$Academics-dark-accent: mat.define-palette(mat.$blue-gray-palette, 500, 100, 800);
+$Academics-dark-warn: mat.define-palette(mat.$red-palette);
+
+
+// ! Create the theme objects
+
+// * Light Theme
+$Academics-Light-Theme: mat.define-light-theme((
+  color: (
+    primary: $Academics-light-primary,
+    accent: $Academics-light-accent,
+    warn: $Academics-light-warn,
+  ),
+));
+// * Dark Theme
+$Academics-Dark-Theme: mat.define-dark-theme((
+  color: (
+    primary: $Academics-dark-primary,
+    accent: $Academics-dark-accent,
+    warn: $Academics-dark-warn,
+  ),
+  typography: mat.define-typography-config(),
+  density: 0
+));
+
+// ! Include the theme
+
+.light-theme {
+  @include mat.core-theme($Academics-Light-Theme);
+  @include mat.button-theme($Academics-Light-Theme);
+  @include mat.all-component-themes($Academics-Light-Theme);
+}
+
+.dark-theme {
+  @include mat.core-theme($Academics-Dark-Theme);
+  @include mat.button-theme($Academics-Dark-Theme);
+  @include mat.all-component-themes($Academics-Dark-Theme);
+}
